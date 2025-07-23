@@ -1,0 +1,15 @@
+RECRUIT
+pass : ['one more recruit only 4 you', 'reroll one', 'reroll all']
+act : ['can recruit 2', 'get contended even if not my derecho', 'DENY ONE TO OPPONENT, BUT CANT CHOOSE']
+
+ATTACK
+att : ['kill one', 'kamikaze'']
+INFILTRATE
+att; 
+QUEST
+
+INFLUENCE   ///Modify area dice
+
+SUPPORT
+
+
