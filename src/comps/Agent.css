@@ -1,0 +1,37 @@
+
+
+.domino-idle {
+  height: 20vh;
+  width: 10vh;
+}
+.Face {
+  width:10vh;
+  height: 10vh;
+  background: #da0060;
+  border: 2px solid black;
+  opacity: 1;
+  display: grid;
+  grid-template-areas:
+      "one two three"
+      "four five six"
+      "seven eight nine";
+  box-sizing: border-box;
+}
+
+.pip {
+  display: block;
+  align-self: center;
+  justify-self: center;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background-color: #333;
+  border: 3px solid white;
+  z-index: 3;
+}
+
+.pip.ideology {
+  background-color: white;
+  border: 3px solid #333;
+}
+

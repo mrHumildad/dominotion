@@ -1,5 +1,9 @@
+export const colors = {
+  
+}
+
 export const ideologies = {
-  Technocratic: {
+  technocratic: {
     description: "Rule by experts, algorithms & data.",
     adjectives: [
       "Inquisitive",   // 1
@@ -10,7 +14,7 @@ export const ideologies = {
       "Post-Human"     // 6
     ]
   },
-  Anarchist: {
+  anarchist: {
     description: "Dismantle all centralized control.",
     adjectives: [
       "Discontent",    // 1
@@ -21,7 +25,7 @@ export const ideologies = {
       "Chaotic"        // 6
     ]
   },
-  Theocratic: {
+  theocratic: {
     description: "Govern by sacred authority.",
     adjectives: [
       "Spiritual",     // 1
@@ -32,7 +36,7 @@ export const ideologies = {
       "Divine"         // 6
     ]
   },
-  Capitalist: {
+  capitalist: {
     description: "Power through markets & profit.",
     adjectives: [
       "Aspiring",      // 1
@@ -43,7 +47,7 @@ export const ideologies = {
       "Tycoon"         // 6
     ]
   },
-  UtopianSocialist: {
+  utopianSocialist: {
     description: "Build a classless, cooperative society.",
     adjectives: [
       "Idealistic",    // 1
@@ -54,7 +58,7 @@ export const ideologies = {
       "Messianic"      // 6
     ]
   },
-  Populist: {
+  populist: {
     description: "Stir the masses against the elites.",
     adjectives: [
       "Concerned",     // 1
@@ -68,8 +72,7 @@ export const ideologies = {
 };
 // 1️⃣ Fields of Dominance (jobs only, ascending power 1→6)
 export const fieldsOfDominance = {
-  1: {
-    field: "Politics",
+  politics: {
     jobs: [
       "Campaign Intern",   // 1
       "City Councilor",    // 2
@@ -79,96 +82,58 @@ export const fieldsOfDominance = {
       "Global Diplomat"    // 6
     ]
   },
-  2: {
-    field: "Finance",
+  finance: {
     jobs: [
-      "Junior Trader",
-      "Account Manager",
-      "Banking Executive",
-      "Private Equity Partner",
-      "Hedge Fund CEO",
-      "Global Financial Czar"
+      "Junior Trader",         // 1
+      "Account Manager",       // 2
+      "Banking Executive",     // 3
+      "Private Equity Partner",// 4
+      "Hedge Fund CEO",        // 5
+      "Global Financial Czar"  // 6
     ]
   },
-  3: {
-    field: "Media",
+  media: {
     jobs: [
-      "Content Moderator",
-      "News Editor",
-      "Television Anchor",
-      "Network Director",
-      "Media Mogul",
-      "Narrative Architect"
+      "Content Moderator",  // 1
+      "News Editor",        // 2
+      "Television Anchor",  // 3
+      "Network Director",   // 4
+      "Media Mogul",        // 5
+      "Narrative Architect" // 6
     ]
   },
-  4: {
-    field: "Law",
+  law: {
     jobs: [
-      "Paralegal",
-      "Public Defender",
-      "Prosecutor",
-      "High Court Judge",
-      "Chief Justice",
-      "Global Tribunal Chair"
+      "Paralegal",            // 1
+      "Public Defender",      // 2
+      "Prosecutor",           // 3
+      "High Court Judge",     // 4
+      "Chief Justice",        // 5
+      "Global Tribunal Chair" // 6
     ]
   },
-  5: {
-    field: "Science",
+  science: {
     jobs: [
-      "Lab Assistant",
-      "Research Scientist",
-      "Inventor",
-      "Tech Startup CEO",
-      "Defense Technologist",
-      "Quantum Futurist"
+      "Lab Assistant",      // 1
+      "Research Scientist", // 2
+      "Inventor",           // 3
+      "Tech Startup CEO",   // 4
+      "Defense Technologist",// 5
+      "Quantum Futurist"    // 6
     ]
   },
-  6: {
-    field: "Culture",
+  culture: {
     jobs: [
-      "Street Artist",
-      "Indie Musician",
-      "Trend Influencer",
-      "Cultural Critic",
-      "Celebrity Strategist",
-      "Symbolic Icon"
+      "Street Artist",       // 1
+      "Indie Musician",      // 2
+      "Trend Influencer",    // 3
+      "Cultural Critic",     // 4
+      "Celebrity Strategist",// 5
+      "Symbolic Icon"        // 6
     ]
   }
 };
 
-// 2️⃣ Ideologies → only adjectives (plus optional metadata)
-/* const ideologies = {
-  1: {
-    ideology: "Technocratic",
-    adjective: "Analytical",
-    description: "Rule by experts, algorithms & data."
-  },
-  2: {
-    ideology: "Anarchist",
-    adjective: "Rebellious",
-    description: "Dismantle all centralized control."
-  },
-  3: {
-    ideology: "Theocratic",
-    adjective: "Divine",
-    description: "Govern by sacred authority."
-  },
-  4: {
-    ideology: "Capitalist",
-    adjective: "Corporate",
-    description: "Power through markets & profit."
-  },
-  5: {
-    ideology: "Utopian Socialist",
-    adjective: "Collectivist",
-    description: "Build a classless, cooperative society."
-  },
-  6: {
-    ideology: "Populist",
-    adjective: "Vocal",
-    description: "Stir the masses against the elites."
-  }
-}; */
 export const worldAreas = {
   "Iron Dominion": {
     nationalities: ["RU", "CN", "DE", "PL", "TR", "SA"],

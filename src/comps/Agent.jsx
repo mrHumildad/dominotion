@@ -1,9 +1,13 @@
 import React from 'react';
-
-const Agent = ({agent}) => {
+import Face from './Die3D/Face';
+import './Agent.css'
+const Agent = ({agent, agentClick}) => {
   return (
     <div className='agent' id={agent.id}>
-      <span className='agent-name'>{agent.name}</span>
+      <div className='domino-idle' id={agent.id} onClick={() => agentClick(agent)}>
+        <Face value={agent.ideologyValue} type='ideology' id={agent.id} name={agent.ideology} />
+        <Face value={agent.fieldValue} type='field' id={agent.id} name={agent.field} />
+      </div>
     </div>
   );
 }

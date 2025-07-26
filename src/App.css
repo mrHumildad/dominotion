@@ -1,19 +1,63 @@
+:root {
+  --military-capitalist: #D7263D;     /* vivid red */
+  --finance-theocratic:  #FFB400;     /* bright orange (switched as requested) */
+  --law-populist:        #931b99;     /* teal green (switched) */
+  --media-anarchist:     #3A0CA3;     /* deep violet */
+  --culture-utopiansocialist: #FF5F00; /* orange-red */
+  --science-technocratic:  #2EC4B6;   /* aqua blue */
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
+
+.military, .capitalist {
+  background: var(--military-capitalist);
+}
+
+.finance, .theocratic {
+  background: var(--finance-theocratic);
+}
+
+.law, .populist {
+  background: var(--law-populist);
+}
+
+.media, .anarchist {
+  background: var(--media-anarchist);
+}
+
+.culture, .utopiansocialist {
+  background: var(--culture-utopiansocialist);
+}
+
+.science, .technocratic {
+  background: var(--science-technocratic);
+}
+
 #worldMap {
-  height: 60vh;
   overflow: scroll;
+  height: 65vh;
 }
 
 .tile {
-  height: 10px;
-  width: 10px;
+  height: 3vw;
+  width: 3vw;
   display: inline-block;
-  border: 1px solid #000;
+  border: 1px solid #2d2c2c;
 }
 .water {
-  background-color: blue;
+  background-color: rgb(49, 49, 147);
 }
 .land {
-  background-color: green;
+  background-color: rgb(11, 12, 11);
 }
 .selected {
   border: 1px solid yellow;
@@ -21,3 +65,22 @@
 .hovered {
   border: 1px solid orange;
 }
+.bottom {
+  height: 25vh;
+  position: relative;
+  width: 100%;
+  display: flex;
+}
+.agents-pool {
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 60%;
+}
+.side-panel {
+  width: 40%;
+  background-color: aqua;
+}
+

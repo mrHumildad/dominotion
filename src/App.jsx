@@ -4,6 +4,9 @@ import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
 import Agent from './comps/Agent.jsx';
 import './App.css'
+import './comps/Die3D/bigDie.css'
+import './comps/Die3D/Die3D.css'
+
 
 const tileTypes = {
   'w': 'water',
@@ -14,8 +17,16 @@ function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
   const [selectedCell, setSelectedCell] = useState(null);
   const [counter, setCounter] = useState(0);
-  const [agentsPool, setAgentsPool] = useState(generateRandomAgents(counter,3));
-  /* const [hoveredCell, setHoveredCell] = useState(null) */
+  const [selectedPool, setSelectedPool] = useState(null);
+  const [agentsPool, setAgentsPool] = useState(() =>generateRandomAgents(counter,3));
+  const cellClick = ({row, col}) => {
+    if (matrix[row][col] === 'w') return
+    setSelectedCell({row, col}) 
+  }
+  const agentClick = (agent) => {
+    console.log(agent)
+    setSelectedPool(agent)
+  }
   const tiles = matrix.map((row, rowIndex) => {
     return row.map((cell, colIndex) => {
       /* const cellValue = matrix[] */
@@ -27,10 +38,10 @@ function App() {
           key={`${rowIndex}-${colIndex}`}
           id={`${rowIndex}-${colIndex}`}
           className={`tile ${cellType} ${isSelected ? 'selected' : ''} `}
-          onClick={() => setSelectedCell({ row: rowIndex, col: colIndex })}
+          onClick={() => cellClick({ row: rowIndex, col: colIndex })}
           /* onMouseEnter={() => setHoveredCell({ row: rowIndex, col: colIndex })}
           onMouseLeave={() => setHoveredCell(null)} */
-        >
+        >{cell}
         </div>
       )
     })
@@ -55,10 +66,16 @@ function App() {
       )}
       </TransformWrapper>
       </div>
-      <div id='agents-pool'>
+      <div className='bottom'>
+        <div className='agents-pool'>
         {agentsPool.map((agent, index) => (
-          <Agent key={index} agent={agent} />
+          <Agent key={index} agent={agent} agentClick={agentClick}/>
         ))}
+      </div>
+      <div className='side-panel'></div>
+      </div>
+      <div className='selected-agent'>
+        {selectedPool && <span>{selectedPool.name + " - " +  selectedPool.title}</span>}
       </div>
     </div>
      

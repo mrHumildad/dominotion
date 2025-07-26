@@ -8,7 +8,8 @@ function getRandomElement(arr) {
 
 export function generateRandomAgents(counter, n = 1) {
   const ideologiesList = Object.keys(ideologies);
-  const fieldsList = Object.values(fieldsOfDominance);
+  const fieldsList = Object.keys(fieldsOfDominance);
+ //console.log(fieldsList)
   const agents = [];
 
   for (let i = 0; i < n; i++) {
@@ -17,12 +18,13 @@ export function generateRandomAgents(counter, n = 1) {
     const gender = Math.random() < 0.5 ? 0 : 1;
     const name = fullName(nationality, gender);
     const ideologyName = getRandomElement(ideologiesList);
-    const ideologyLevel = Math.floor(Math.random() * 6); // 0-5
+    let ideologyLevel = Math.floor(Math.random() * 6); // 0-5
     const ideologyData = ideologies[ideologyName];
 
-    const fieldIndex = Math.floor(Math.random() * 6); // 0–5
-    const fieldData = fieldsList[fieldIndex];
-    const jobLevel = Math.floor(Math.random() * 6); // 0-5
+    const fieldName = getRandomElement(fieldsList); // 0–5
+    const fieldData = fieldsOfDominance[fieldName];
+    //console.log(fieldData)
+    let jobLevel = Math.floor(Math.random() * 6); // 0-5
 
     // Check region's dice sides for matches
     const regionDice = worldAreas[region].sides;
@@ -31,7 +33,7 @@ export function generateRandomAgents(counter, n = 1) {
     for (const side of regionDice) {
       if (
         (side.ideology === ideologyName && side.side === ideologyLevel + 1) ||
-        (side.field === fieldData.field && side.side === jobLevel + 1)
+        (side.field === fieldName && side.side === jobLevel + 1)
       ) {
         status = "Aligned";
         break;
@@ -39,15 +41,16 @@ export function generateRandomAgents(counter, n = 1) {
     }
 
     agents.push({
+      id: counter + 1,
       name,
       region,
       ideology: ideologyName,
-      id: counter + 1,
-      //ideologyAdjective: ideologyData.adjectives[ideologyLevel],
-      field: fieldData.field,
-      //job: fieldData.jobs[jobLevel],
+      field: fieldName,
+      ideologyValue: ideologyLevel + 1,
+      fieldValue: jobLevel + 1,
+      personality: ideologyData.adjectives[ideologyLevel],
+      job: fieldData.jobs[jobLevel],
       title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
-  //description: ideologyData.description,
       status
     });
     counter++;

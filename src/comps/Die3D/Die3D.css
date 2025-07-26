@@ -1,0 +1,82 @@
+.die-container {
+  width: 300px;
+  height: 300px;
+}
+
+.cube {
+  width: 40vw;
+  height: 40vw;
+  max-width: 40vh;
+  max-height: 40vh;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
+  margin: 0 auto;
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  background: #da0060;
+  border: 2px solid black;
+  position: absolute;
+  opacity: 1;
+  display: grid;
+  grid-template-areas:
+      "one two three"
+      "four five six"
+      "seven eight nine";
+  box-sizing: border-box;
+}
+
+
+/* Standard cube face transforms */
+.face--0 { /* Front */
+  transform: rotateY(0deg) translateZ(20vw);
+}
+.face--1 { /* Back */
+  transform: rotateY(180deg) translateZ(20vw);
+}
+.face--2 { /* Right */
+  transform: rotateY(90deg) translateZ(20vw);
+}
+.face--3 { /* Left */
+  transform: rotateY(-90deg) translateZ(20vw);
+}
+.face--4 { /* Top */
+  transform: rotateX(90deg) translateZ(20vw);
+}
+.face--5 { /* Bottom */
+  transform: rotateX(-90deg) translateZ(20vw);
+}
+
+/* Cube rotation for each face */
+.show-0  { transform: rotateY(0deg); }
+.show-1  { transform: rotateY(-180deg); }
+.show-2  { transform: rotateY(-90deg); }
+.show-3  { transform: rotateY(90deg); }
+.show-4  { transform: rotateX(-90deg); }
+.show-5  { transform: rotateX(90deg); }
+
+.pip3D {
+  display: block;
+  align-self: center;
+  justify-self: center;
+  width: 8vw;
+  height: 8vw;
+  border-radius: 50%;
+  background-color: #333;
+  z-index: 3;
+}
+
+.pip2D {
+  display: block;
+  align-self: center;
+  justify-self: center;
+  width: 3.5vw;
+  height: 3.5vw;
+  border-radius: 50%;
+  background-color: #333;
+  z-index: 3;
+}
+
