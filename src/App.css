@@ -46,10 +46,13 @@ body {
   overflow: scroll;
   height: 65vh;
 }
-
+#worldMapEditor {
+  overflow: scroll;
+  height: 85vh;
+}
 .tile {
-  height: 3vw;
-  width: 3vw;
+  height: 2vw;
+  width: 2vw;
   display: inline-block;
   border: 1px solid #2d2c2c;
 }
@@ -81,6 +84,10 @@ body {
 }
 .side-panel {
   width: 40%;
-  background-color: aqua;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center
 }
 

@@ -1,6 +1,22 @@
 export const colors = {
-  
-}
+  ideologies: {
+    Capitalist: "#D4AF37",        // Finance
+    Theocratic: "#A31F34",        // Media
+    Populist: "#FF6B3B",          // Culture
+    Anarchist: "#4d2a85ff",         // Law
+    UtopianSocialist: "#30b52eff",  // Science
+    Technocratic: "#1571d3ff",      // Military
+  },
+  fields: {
+    Finance: "#D4AF37",        // Capitalist
+    Media: "#A31F34",          // Theocratic
+    Culture: "#FF6B3B",        // Populist
+    Law: "#4C2A85",            // Anarchist
+    Science: "#2EB5A3",        // UtopianSocialist
+    Military: "#3A6EA5",       // Technocratic
+  }
+};
+
 
 export const ideologies = {
   technocratic: {
@@ -129,76 +145,100 @@ export const fieldsOfDominance = {
       "Trend Influencer",    // 3
       "Cultural Critic",     // 4
       "Celebrity Strategist",// 5
-      "Symbolic Icon"        // 6
+      "Symbolic Architect"        // 6
     ]
   }
 };
 
 export const worldAreas = {
   "Iron Dominion": {
+    name: "Iron Dominion",
+    icon: "🛡️",
+    char: "I",
+    description: "A brutalist stronghold where strength and order dominate, shaped by harsh winters and harsher regimes.",
     nationalities: ["RU", "CN", "DE", "PL", "TR", "SA"],
     sides: [
-      { side: 1, ideology: "Capitalist", field: "Military" },
-      { side: 2, ideology: "Theocratic", field: "Finance" },
-      { side: 3, ideology: "Populist", field: "Law" },
-      { side: 4, ideology: "Anarchist", field: "Media" },
-      { side: 5, ideology: "UtopianSocialist", field: "Culture" },
-      { side: 6, ideology: "Technocratic", field: "Science" },
+      { side: 1, ideology: "Capitalist", field: "Finance" },
+      { side: 2, ideology: "Theocratic", field: "Media" },
+      { side: 3, ideology: "Populist", field: "Culture" },
+      { side: 4, ideology: "Anarchist", field: "Law" },
+      { side: 5, ideology: "UtopianSocialist", field: "Science" },
+      { side: 6, ideology: "Technocratic", field: "Military" },
     ]
   },
   "Bleeding Sands": {
+    name: "Bleeding Sands",
+    icon: "🏜️",
+    char: "B",
+    description: "Endless deserts soaked in old conflicts and new riches, where ideology burns as hot as the sun.",
     nationalities: ["SA", "IN", "IL", "ID", "VN", "EG"],
     sides: [
-      { side: 1, ideology: "Theocratic", field: "Science" },
-      { side: 2, ideology: "Populist", field: "Military" },
-      { side: 3, ideology: "Anarchist", field: "Finance" },
-      { side: 4, ideology: "UtopianSocialist", field: "Law" },
-      { side: 5, ideology: "Technocratic", field: "Media" },
-      { side: 6, ideology: "Capitalist", field: "Culture" },
+      { side: 1, ideology: "Technocratic", field: "Military" },
+      { side: 2, ideology: "Capitalist", field: "Finance" },
+      { side: 3, ideology: "Theocratic", field: "Media" },
+      { side: 4, ideology: "Populist", field: "Culture" },
+      { side: 5, ideology: "Anarchist", field: "Law" },
+      { side: 6, ideology: "UtopianSocialist", field: "Science" },
     ]
   },
   "Shattered Megalopolis": {
+    name: "Shattered Megalopolis",
+    icon: "🌆",
+    char: "M",
+    description: "Hyper-dense ruins of once-great cities, now fractured into ideological microstates battling for narrative control.",
     nationalities: ["US", "GB", "FR", "BE", "NL", "ES"],
     sides: [
-      { side: 1, ideology: "Populist", field: "Culture" },
-      { side: 2, ideology: "Anarchist", field: "Science" },
-      { side: 3, ideology: "UtopianSocialist", field: "Military" },
-      { side: 4, ideology: "Technocratic", field: "Finance" },
-      { side: 5, ideology: "Capitalist", field: "Law" },
-      { side: 6, ideology: "Theocratic", field: "Media" },
+      { side: 1, ideology: "UtopianSocialist", field: "Science" },
+      { side: 2, ideology: "Technocratic", field: "Military" },
+      { side: 3, ideology: "Capitalist", field: "Finance" },
+      { side: 4, ideology: "Theocratic", field: "Media" },
+      { side: 5, ideology: "Populist", field: "Culture" },
+      { side: 6, ideology: "Anarchist", field: "Law" },
     ]
   },
   "Toxic Archipelago": {
+    name: "Toxic Archipelago",
+    icon: "☢️",
+    char: "T",
+    description: "A scattered chain of irradiated islands where experimentation, survival, and ideology float in uneasy balance.",
     nationalities: ["ID", "TH", "PH", "TW", "MY", "VN"],
     sides: [
-      { side: 1, ideology: "Anarchist", field: "Media" },
-      { side: 2, ideology: "UtopianSocialist", field: "Culture" },
-      { side: 3, ideology: "Technocratic", field: "Science" },
-      { side: 4, ideology: "Capitalist", field: "Military" },
-      { side: 5, ideology: "Theocratic", field: "Finance" },
-      { side: 6, ideology: "Populist", field: "Law" },
+      { side: 1, ideology: "Anarchist", field: "Law" },
+      { side: 2, ideology: "UtopianSocialist", field: "Science" },
+      { side: 3, ideology: "Technocratic", field: "Military" },
+      { side: 4, ideology: "Capitalist", field: "Finance" },
+      { side: 5, ideology: "Theocratic", field: "Media" },
+      { side: 6, ideology: "Populist", field: "Culture" },
     ]
   },
   "Silent Expanse": {
+    name: "Silent Expanse",
+    icon: "🦜",
+    char: "S",
+    description: "A quiet frontier of overgrown ruins and whispered rebellions, where dreams of utopia never die.",
     nationalities: ["AR", "BR", "MX", "PT", "IT", "GR"],
     sides: [
-      { side: 1, ideology: "UtopianSocialist", field: "Law" },
-      { side: 2, ideology: "Technocratic", field: "Media" },
-      { side: 3, ideology: "Capitalist", field: "Culture" },
-      { side: 4, ideology: "Theocratic", field: "Science" },
-      { side: 5, ideology: "Populist", field: "Military" },
-      { side: 6, ideology: "Anarchist", field: "Finance" },
+      { side: 1, ideology: "Populist", field: "Culture" },
+      { side: 2, ideology: "Anarchist", field: "Law" },
+      { side: 3, ideology: "UtopianSocialist", field: "Science" },
+      { side: 4, ideology: "Technocratic", field: "Military" },
+      { side: 5, ideology: "Capitalist", field: "Finance" },
+      { side: 6, ideology: "Theocratic", field: "Media" },
     ]
   },
   "Hive Nexus": {
+    name: "Hive Nexus",
+    icon: "🔧",
+    char: "H",
+    description: "A neon-lit technoscape of vertical farms, AI governors, and silent dissenters buried under optimization.",
     nationalities: ["JP", "KR", "SE", "FI", "NO", "DK"],
     sides: [
-      { side: 1, ideology: "Technocratic", field: "Finance" },
-      { side: 2, ideology: "Capitalist", field: "Law" },
-      { side: 3, ideology: "Theocratic", field: "Media" },
-      { side: 4, ideology: "Populist", field: "Culture" },
-      { side: 5, ideology: "Anarchist", field: "Science" },
-      { side: 6, ideology: "UtopianSocialist", field: "Military" },
+      { side: 1, ideology: "Theocratic", field: "Media" },
+      { side: 2, ideology: "Populist", field: "Culture" },
+      { side: 3, ideology: "Anarchist", field: "Law" },
+      { side: 4, ideology: "UtopianSocialist", field: "Science" },
+      { side: 5, ideology: "Technocratic", field: "Military" },
+      { side: 6, ideology: "Capitalist", field: "Finance" },
     ]
   }
 };
