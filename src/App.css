@@ -73,10 +73,12 @@ body {
   position: relative;
   width: 100%;
   display: flex;
+  border: 1px solid red;
 }
 .agents-pool {
   display: flex;
-  height: 100%;
+  border: 1px solid red;
+  
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;

@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import {worldMapMatrix} from './logics/worldMapMatrix.js'
+import {worldMapMatrix} from '../logics/worldMapMatrix.js'
+//import { grid } from './grid.js';
 import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
-import './App.css'
-import './comps/Die3D/bigDie.css'
-import './comps/Die3D/Die3D.css'
-import { desaturateHex, findAreaByChar } from './logics/utils.js';
-import {colors, worldAreas} from './logics/data.js'
+import '../App.css'
+import '../comps/Die3D/bigDie.css'
+import '../comps/Die3D/Die3D.css'
+import { getAreaColor, findAreaByChar } from '../logics/utils.js';
+import {colors, worldAreas} from '../logics/data.js'
 const tileTypes = {
   'w': 'water',
   'l': 'land',
@@ -14,18 +15,18 @@ const tileTypes = {
 function MapEditor() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
   const [paint, setPaint] = useState('w');
-  const paintArea = findAreaByChar(paint)
+  const paintArea = findAreaByChar(paint);
+  
   const cellClick = ({row, col}) => {
     let newMatrix = [...matrix]
     newMatrix[row][col] = paint
     setMatrix(newMatrix)
-    //console.log(matrix)
+    console.log(matrix)
   }
-  const getAreaColor = (area) => {
-    const AreaIdeology = area.sides[5].ideology;
-    //console.log(colors.ideologies[AreaIdeology])
-    return colors.ideologies[AreaIdeology]
+  /* const matrix2string = (matrix) => {
+    return matrix.map(row => row.join('","')).join('\n')
   }
+  console.log(matrix2string(matrix)) */
   const paintbuttons = Object.keys(worldAreas).map((areaName, index) => {
     const area = worldAreas[areaName]
     //console.log(area.char)
@@ -53,7 +54,7 @@ function MapEditor() {
           className={`tile `}
           style={{backgroundColor: cellCol}}
           onClick={() => cellClick({ row: rowIndex, col: colIndex })}>
-            {cell === 'w' ? '' : cell}
+            {cell === 'w' ? '' : ''}
         </div>
       )
     })

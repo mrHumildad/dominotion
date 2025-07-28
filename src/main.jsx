@@ -2,10 +2,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import MapEditor from './MapEditor.jsx'
+import MapEditor from './mapEditor/MapEditor.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    {/* <App /> */}
-    <MapEditor />
+    <App />
+    {/* <MapEditor /> */}
   </StrictMode>,
 )

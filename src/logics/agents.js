@@ -44,6 +44,8 @@ export function generateRandomAgents(counter, n = 1) {
       id: counter + 1,
       name,
       region,
+      ideologyCell: null,
+      fieldCell: null,
       ideology: ideologyName,
       field: fieldName,
       ideologyValue: ideologyLevel + 1,
