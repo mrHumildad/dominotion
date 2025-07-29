@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { ideologies, fieldsOfDominance, worldAreas } from "./data.js";
 import { firstName, lastName, fullName } from 'full-name-generator';
 
@@ -6,7 +8,7 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function generateRandomAgents(counter, n = 1) {
+export function generateRandomAgents( n) {
   const ideologiesList = Object.keys(ideologies);
   const fieldsList = Object.keys(fieldsOfDominance);
  //console.log(fieldsList)
@@ -20,7 +22,7 @@ export function generateRandomAgents(counter, n = 1) {
     const ideologyName = getRandomElement(ideologiesList);
     let ideologyLevel = Math.floor(Math.random() * 6); // 0-5
     const ideologyData = ideologies[ideologyName];
-
+    //const subIdeology = ideologyData.subIdeologies[Math.floor(Math.random() * ideologyData.subIdeologies.length)];
     const fieldName = getRandomElement(fieldsList); // 0–5
     const fieldData = fieldsOfDominance[fieldName];
     //console.log(fieldData)
@@ -41,9 +43,10 @@ export function generateRandomAgents(counter, n = 1) {
     }
 
     agents.push({
-      id: counter + 1,
+      id: uuidv4(),
       name,
       region,
+      //subIdeology,
       ideologyCell: null,
       fieldCell: null,
       ideology: ideologyName,
@@ -55,7 +58,6 @@ export function generateRandomAgents(counter, n = 1) {
       title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
       status
     });
-    counter++;
   }
 
   console.table(agents);

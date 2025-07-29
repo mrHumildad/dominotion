@@ -4,7 +4,7 @@ import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
 import { findAreaByChar } from './logics/utils.js';
 import {colors, worldAreas} from './logics/data.js'
-import { getPossibleRotations } from './logics/matrix_utils.js';
+import { getPossibleRotations, tileBorders, tile2Agent} from './logics/matrix_utils.js';
 import Agent from './comps/Agent.jsx';
 import './App.css'
 import './comps/Die3D/bigDie.css'
@@ -15,27 +15,35 @@ import Face from './comps/Die3D/Face.jsx';
 function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
   const [selectedCell, setSelectedCell] = useState(null);
-  const [counter, setCounter] = useState(0);
   const [selectedPool, setSelectedPool] = useState(null);
-  const [agentsPool, setAgentsPool] = useState(() =>generateRandomAgents(counter,3));
+  const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
   const [myAgents, setMyAgents] = useState([]);
   const [deployedAgent, setDeployedAgent] = useState({
     ideology: {col: null, row: null},
     field: {col: null, row: null},
     rotation: null
   });
-  console.log(myAgents)
+  //myAgents.map(agent => console.log(agent.fieldCell, agent.ideologyCell))
+  //console.log('pool', agentsPool)
   const cellClick = ({row, col}) => {
+    console.log('row', row, 'col', col)
+    console.log(tile2Agent({row, col}, myAgents))
     if (matrix[row][col] === 'w') return;
     if (deployedAgent && deployedAgent.field.row === row && deployedAgent.field.col === col) {
       let myNewAgent = {...selectedPool, ideologyCell: deployedAgent.ideology, fieldCell: deployedAgent.field}
+      console.log('my new agent', myNewAgent)
       setMyAgents([...myAgents, myNewAgent])
-      setAgentsPool(agentsPool.filter(agent => agent.id !== deployedAgent.id))
-      setDeployedAgent(null)
+      setAgentsPool(agentsPool.filter(agent => agent.id !== myNewAgent.id))
+      setDeployedAgent({
+        ideology: {col: null, row: null},
+        field: {col: null, row: null},
+        rotation: null
+      })
+      setSelectedPool(null)
       return
-    }
+    };
     if (deployedAgent && deployedAgent.ideology.row === row && deployedAgent.ideology.col === col) {
-      const rotations = getPossibleRotations({ideo: deployedAgent.ideology, matrix})
+      const rotations = getPossibleRotations({ideo: deployedAgent.ideology, matrix, myAgents})
       //console.log(rotations)
       const next = rotations[deployedAgent.rotation + 1]
       setDeployedAgent(
@@ -47,16 +55,15 @@ function App() {
       )
       return;
     }
-
     if (selectedPool) {
-      const rotations = getPossibleRotations({ideo: {row, col}, matrix})
+      const rotations = getPossibleRotations({ideo: {row, col}, matrix, myAgents})
       //console.log(rotations)
       setDeployedAgent({ideology: {row, col}, field: rotations[0] })
     }
     setSelectedCell({row, col})
   }
   const agentClick = (agent) => {
-    console.log(agent)
+    //console.log(agent)
     setSelectedPool(agent)
   }
 const tiles = matrix.map((row, rowIndex) => {
@@ -87,12 +94,18 @@ const tiles = matrix.map((row, rowIndex) => {
 
       const area = findAreaByChar(cell);
       const cellCol = colors.ideologies[area.sides[5].ideology];
-
+      const cellBorders = tileBorders({row: rowIndex, col: colIndex}, matrix, myAgents, currentMyAgent);
       return (
         <div
           key={`${rowIndex}-${colIndex}`}
           id={`${rowIndex}-${colIndex}`}
-          style={{ backgroundColor: cellCol }}
+          style={{ 
+            backgroundColor: cellCol,
+            borderTopColor: cellBorders.top,
+            borderRightColor: cellBorders.right,
+            borderBottomColor: cellBorders.bottom,
+            borderLeftColor: cellBorders.left
+          }}
           className={`tile ${isSelected ? 'selected' : ''}`}
           onClick={() => cellClick({ row: rowIndex, col: colIndex })}
         >
@@ -124,6 +137,7 @@ const tiles = matrix.map((row, rowIndex) => {
               type='field'
               id={currentMyAgent.id}
               name={currentMyAgent.field}
+              /* borders={{top: tileBorders({row: rowIndex, col: colIndex}, matrix, myAgents, currentMyAgent)}} */
             />
           )}
         </div>
@@ -154,11 +168,14 @@ const tiles = matrix.map((row, rowIndex) => {
       <div className='bottom'>
         <div className='agents-pool'>
         {agentsPool.map((agent, index) => (
-          <Agent key={index} agent={agent} agentClick={agentClick}/>
+          <Agent key={agent.id} agent={agent} agentClick={agentClick}/>
         ))}
       </div>
       <div className='side-panel'>
-
+        <div className='butts'>
+          <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
+          <button onClick={() => setAgentsPool(generateRandomAgents(3))}>REROLL ALL</button>
+        </div>
       </div>
       </div>
       <div className='selected-agent'>

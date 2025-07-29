@@ -11,7 +11,15 @@ const pipMap = {
   8: ['one', 'two', 'three', 'four', 'six', 'seven', 'eight', 'nine'],
   9: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 }
-const Face = ({value, type, id, name}) => {
+
+const defaultBorders = {
+  top: 'black',
+  right: 'black',
+  bottom: 'black',
+  left: 'black'
+}
+
+const Face = ({value, type, id, name, borders = defaultBorders}) => {
   const totalPips = value;
   const pipsPattern = pipMap[totalPips];
   ///console.log('usedpips', usedPips)
@@ -25,10 +33,11 @@ const Face = ({value, type, id, name}) => {
         />
       );
     });
-
   let classes ='Face ' + name
   return (
-    <div className={classes} id={id + type}>
+    <div className={classes} id={id + type} /* style={{
+      borderTopColor: borders.top,
+    }} */>
       {pips}
     </div>
   );
