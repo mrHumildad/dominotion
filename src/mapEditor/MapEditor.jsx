@@ -33,7 +33,7 @@ function MapEditor() {
     return (
       <button key={index} 
         onClick={() => setPaint(area.char)}
-        style={{backgroundColor: getAreaColor(area)}}>
+        style={{backgroundColor: getAreaColor(area).des}}>
           {area.char}
       </button>
     )
@@ -46,7 +46,7 @@ function MapEditor() {
       if (cell === 'w') return <div className='tile water' key={`${rowIndex}-${colIndex}`} id={`${rowIndex}-${colIndex}`} onClick={() => cellClick({ row: rowIndex, col: colIndex })}></div>
       const area = findAreaByChar(cell);
       //console.log(cell, rowIndex, colIndex, area)
-      const cellCol = colors.ideologies[area.sides[5].ideology]
+      const cellCol = colors[area.sides[5].ideology]
       return (
         <div
           key={`${rowIndex}-${colIndex}`}

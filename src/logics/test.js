@@ -1,424 +1,7 @@
-export const ideologies = {
-  chaos: {
-    name: "Chaos",
-    resource: 'freedom',
-    description: "Rule by chaos by dismantling existing order and systems, believing true freedom emerges from disruption.",
-    adjectives: [
-      "Discontent",    // 1
-      "Rebellious",    // 2
-      "Radical",       // 3
-      "Subversive",    // 4
-      "Insurgent",     // 5
-      "Chaotic"        // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Anarchist",
-        icon: "👻", // Ghostly figure, representing absence of rule
-        specialActions: [
-          "Launch DDoS Attack (Disrupt centralized networks)",
-          "Decentralize Data Network (Break corporate control)",
-          "Create Encrypted Haven (Establish unmonitored zones)"
-        ]
-      },
-      {
-        name: "Nihilist",
-        icon: "💀", // Skull, representing ultimate deconstruction
-        specialActions: [
-          "Induce Mass Apathy (Undermine collective will)",
-          "Perform Symbolic Destruction (Erode meaning in institutions)",
-          "Unleash Existential Crisis Campaign (Sow doubt in societal values)"
-        ]
-      },
-      {
-        name: "Primalist",
-        icon: "🌿", // Leaf/wilderness, representing return to nature
-        specialActions: [
-          "Establish Autonomous Zone (Create off-grid communities)",
-          "Sabotage Urban Infrastructure (Dismantle city reliance)",
-          "Forge Tribal Alliance (Unite decentralized groups)"
-        ]
-      },
-      {
-        name: "Insurrectionist",
-        icon: "💥", // Explosion/spark, representing active rebellion
-        specialActions: [
-          "Organize Civil Disobedience (Encourage mass non-compliance)",
-          "Fund Black Market Network (Support parallel economies)",
-          "Arm Local Militias (Empower self-defense groups)"
-        ]
-      },
-      {
-        name: "Reconstructor",
-        icon: "♻️", // Recycle/rebuild, representing building anew from destruction
-        specialActions: [
-          "Catalyze Systemic Collapse (Accelerate breakdown for new growth)",
-          "Redistribute Scars of Old Order (Re-purpose remnants of power)",
-          "Forge Post-Collapse Consensus (Guide new societal formation)"
-        ]
-      },
-      {
-        name: "Accidentalist",
-        icon: "🎲", // Dice, representing randomness/chance
-        specialActions: [
-          "Introduce Random Anomalies (Disrupt predictable outcomes)",
-          "Amplify Unforeseen Variables (Heighten chaos in controlled systems)",
-          "Exploit Systemic Glitches (Leverage inherent flaws for disruption)"
-        ]
-      }
-    ]
-  },
-  information: {
-    name: "Information",
-    resource: 'control',
-    description: "Control through pervasive information, data-driven insights, and digital oversight, aiming for a perfectly managed society.",
-    adjectives: [
-      "Connected",     // 1
-      "Informative",   // 2
-      "Analytical",    // 3
-      "Integrated",    // 4
-      "Omniscient",    // 5
-      "Controlling"    // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Logician",
-        icon: "📊", // Bar chart/analytics, representing data focus
-        specialActions: [
-          "Deploy Predictive Algorithms (Anticipate public behavior)",
-          "Refine Data-Driven Directives (Optimize policy for efficiency)",
-          "Eliminate Systemic Inconsistencies (Ensure logical coherence)"
-        ]
-      },
-      {
-        name: "Integrator",
-        icon: "🔗", // Chain links, representing connection
-        specialActions: [
-          "Merge Global Digital Infrastructure (Connect all networks)",
-          "Standardize Communication Protocols (Ensure universal compatibility)",
-          "Bridge Inter-System Gaps (Remove all data silos)"
-        ]
-      },
-      {
-        name: "Cognitivist",
-        icon: "🧠", // Brain, representing thought shaping
-        specialActions: [
-          "Curate Information Flow (Control what is seen and heard)",
-          "Develop Targeted Messaging (Influence specific demographics)",
-          "Implant Core Belief Constructs (Shape fundamental worldviews)"
-        ]
-      },
-      {
-        name: "Panopticon",
-        icon: "👁️", // Eye, representing surveillance
-        specialActions: [
-          "Expand Biometric Surveillance (Monitor individual movements)",
-          "Implement Universal Digital ID (Track all citizen activity)",
-          "Detect Pre-Crimimal Intent (Identify potential dissenters)"
-        ]
-      },
-      {
-        name: "Predictivist",
-        icon: "🔮", // Crystal ball, representing foresight
-        specialActions: [
-          "Simulate Future Scenarios (Model potential global events)",
-          "Optimize Resource Allocation (Based on forecasted needs)",
-          "Prevent Unplanned Deviations (Guide society towards desired outcomes)"
-        ]
-      },
-      {
-        name: "Infoliberal",
-        icon: "📖", // Open book, representing controlled knowledge
-        specialActions: [
-          "Release Curated Data Dumps (Shape public perception strategically)",
-          "Filter Global Information Streams (Control access to specific content)",
-          "Promote 'Enlightened' Narratives (Guide understanding of truth)"
-        ]
-      }
-    ]
-  },
-  wealth: {
-    name: "Wealth",
-    resource: 'Money',
-    description: "Control through economic dominance, resource monopolization, and the manipulation of global markets.",
-    adjectives: [
-      "Profitable",    // 1
-      "Amassing",      // 2
-      "Influential",   // 3
-      "Dominant",      // 4
-      "Monopolistic",  // 5
-      "Greedy"         // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Market Supremacist",
-        icon: "📈", // Stock chart, representing market control
-        specialActions: [
-          "Engineer Market Crash (Collapse rival economies)",
-          "Corner Global Commodity (Control vital trade goods)",
-          "Leverage Debt Slavery (Bind populations through financial burden)"
-        ]
-      },
-      {
-        name: "Resource Extortionist",
-        icon: "💎", // Diamond/gem, representing precious resources
-        specialActions: [
-          "Monopolize Rare Earths (Control critical tech components)",
-          "Control Global Water Supply (Command essential human need)",
-          "Exploit Labor Force (Maximize profit through subjugation)"
-        ]
-      },
-      {
-        name: "Debt Forger",
-        icon: "💸", // Money with wings, representing financial manipulation
-        specialActions: [
-          "Indebt Sovereign Nations (Subjugate countries financially)",
-          "Foreclose on Vital Assets (Seize critical infrastructure)",
-          "Weaponize Economic Sanctions (Cripple opposition economies)"
-        ]
-      },
-      {
-        name: "Monopolist",
-        icon: "🏭", // Factory, representing industrial control
-        specialActions: [
-          "Acquire Key Industries (Buy out competitors)",
-          "Eliminate Competition (Undermine rival businesses)",
-          "Control Supply Chains (Dominant production and distribution)"
-        ]
-      },
-      {
-        name: "Black Marketeer",
-        icon: "🥷", // Ninja/shadow, representing illicit operations
-        specialActions: [
-          "Establish Illicit Trade Routes (Circumvent legal channels)",
-          "Traffick Forbidden Goods (Deal in banned or scarce items)",
-          "Corrupt Officials (Buy influence and protection)"
-        ]
-      },
-      {
-        name: "Asset Stripper",
-        icon: "💔", // Broken heart/dismantling, representing deconstruction for profit
-        specialActions: [
-          "Initiate Hostile Takeover (Acquire and dismantle failing entities)",
-          "Liquidate Public Holdings (Privatize essential services)",
-          "Offshore Wealth & Resources (Hide assets from taxation/control)"
-        ]
-      }
-    ]
-  },
-  vanguard: {
-    name: "Vanguard",
-    resource: 'order',
-    description: "Control through military strength, strict discipline, and the imposition of absolute societal order.",
-    adjectives: [
-      "Disciplined",   // 1
-      "Secure",        // 2
-      "Authoritative", // 3
-      "Enforcing",     // 4
-      "Militarized",   // 5
-      "Iron-fisted"    // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Authoritarian",
-        icon: "👑", // Crown/ruler, representing central power
-        specialActions: [
-          "Implement Martial Law (Impose military rule)",
-          "Dissolve Legislative Bodies (Centralize all decision-making)",
-          "Consolidate Executive Power (Concentrate authority to one leader)"
-        ]
-      },
-      {
-        name: "Disciplinarian",
-        icon: "⛓️", // Chains, representing strict rules
-        specialActions: [
-          "Enforce Strict Curfews (Control citizen movement)",
-          "Mandate Compulsory Service (Force obedience through labor/military)",
-          "Punish Deviance Severely (Crush dissent to maintain order)"
-        ]
-      },
-      {
-        name: "Strategic Supremacist",
-        icon: "♟️", // Chess pawn, representing tactical dominance
-        specialActions: [
-          "Execute Pre-emptive Strike (Neutralize perceived threats)",
-          "Establish Global Garrisons (Project power worldwide)",
-          "Develop Unrivaled Weaponry (Ensure military superiority)"
-        ]
-      },
-      {
-        name: "Order Purist",
-        icon: "📐", // Ruler/set square, representing exactness/perfection
-        specialActions: [
-          "Eradicate Dissident Factions (Eliminate all opposition)",
-          "Censor Unapproved Information (Control narratives that challenge order)",
-          "Establish Thought Police (Monitor and suppress ideological deviation)"
-        ]
-      },
-      {
-        name: "Militaristic Traditionalist",
-        icon: "🛡️", // Shield, representing old ways/defense
-        specialActions: [
-          "Restore Ancient Military Codes (Revive forgotten doctrines)",
-          "Reinstate Hereditary Leadership (Re-establish bloodline authority)",
-          "Emphasize Cultural Uniformity (Suppress diversity for cohesion)"
-        ]
-      },
-      {
-        name: "Defensive Hegemon",
-        icon: "🌐", // Globe, representing global security
-        specialActions: [
-          "Impose No-Fly Zones (Control airspace globally)",
-          "Establish Global Anti-Terror Protocols (Justify wide-reaching interventions)",
-          "Force Disarmament of Rivals (Ensure no other power can challenge them)"
-        ]
-      }
-    ]
-  },
-  cult: {
-    name: "Cult",
-    resource: 'influence',
-    description: "Control through shaping belief systems, moral narratives, and the spiritual or ideological conviction of the masses.",
-    adjectives: [
-      "Devoted",       // 1
-      "Persuasive",    // 2
-      "Dogmatic",      // 3
-      "Indoctrinating",// 4
-      "Fanatical",     // 5
-      "Absolute"       // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Zealot",
-        icon: "🔥", // Fire, representing fervent belief
-        specialActions: [
-          "Initiate Mass Conversion Drive (Bring new believers into the fold)",
-          "Condemn Heretical Thought (Suppress opposing ideologies)",
-          "Martyr Key Figures (Inspire ultimate devotion)"
-        ]
-      },
-      {
-        name: "Charismatist",
-        icon: "✨", // Sparkle, representing inspiration
-        specialActions: [
-          "Deliver Inspiring Orations (Rally mass support)",
-          "Cultivate Personal Devotion (Secure unswerving loyalty)",
-          "Unify Disparate Factions (Bring rivals under common cause)"
-        ]
-      },
-      {
-        name: "Moral Imperative",
-        icon: "⚖️", // Scales, representing judgment/morality
-        specialActions: [
-          "Declare Universal Moral Code (Impose singular ethical system)",
-          "Sanction Immoral Practices (Punish perceived transgressions)",
-          "Redefine Good and Evil (Control the societal compass)"
-        ]
-      },
-      {
-        name: "Mystic",
-        icon: "🌌", // Milky Way/stars, representing cosmic knowledge
-        specialActions: [
-          "Unveil Ancient Prophecy (Legitimize claims with hidden knowledge)",
-          "Perform World-Shaping Ritual (Invoke unseen powers)",
-          "Channel Cosmic Energy (Tap into supernatural forces)"
-        ]
-      },
-      {
-        name: "Propagandist",
-        icon: "📢", // Megaphone, representing mass communication
-        specialActions: [
-          "Flood Media with Doctrines (Control public narrative)",
-          "Create Emotionally Charged Campaigns (Manipulate public sentiment)",
-          "Suppress Dissenting Voices (Silence opposition through media control)"
-        ]
-      },
-      {
-        name: "Redeemer",
-        icon: "🕊️", // Dove/peace, representing salvation
-        specialActions: [
-          "Offer Universal Absolution (Draw followers through forgiveness)",
-          "Promise Utopian Afterlife/Future (Provide hope for loyalty)",
-          "Implement 'Cleansing' Protocols (Eliminate those who resist 'salvation')"
-        ]
-      }
-    ]
-  },
-  architects: {
-    name: "Architects",
-    resource: 'progress',
-    description: "Control through planned advancement, scientific innovation, and the deliberate design of future societies.",
-    adjectives: [
-      "Innovative",    // 1
-      "Efficient",     // 2
-      "Strategic",     // 3
-      "Designing",     // 4
-      "Transformative",// 5
-      "Utopian"        // 6
-    ],
-    subIdeologies: [
-      {
-        name: "Planner",
-        icon: "🗺️", // Map/blueprint, representing foresight
-        specialActions: [
-          "Enact Global Development Plan (Oversee vast societal projects)",
-          "Engineer Societal Evolution (Guide human progress scientifically)",
-          "Design Future Cities (Create optimized living environments)"
-        ]
-      },
-      {
-        name: "Researcher",
-        icon: "🔬", // Microscope, representing scientific inquiry
-        specialActions: [
-          "Accelerate Breakthrough Research (Push boundaries of knowledge)",
-          "Control Genetic Modification (Direct human and ecological evolution)",
-          "Direct AI Development (Shape the future of intelligence)"
-        ]
-      },
-      {
-        name: "Optimiser",
-        icon: "⚙️", // Gear, representing efficiency
-        specialActions: [
-          "Implement Sustainable Systems (Ensure long-term viability of resources)",
-          "Automate Resource Allocation (Streamline distribution of goods)",
-          "Eliminate Waste & Inefficiency (Perfect all societal processes)"
-        ]
-      },
-      {
-        name: "Utopian",
-        icon: "✨", // Sparkle/ideal, representing perfection
-        specialActions: [
-          "Construct Ideal Societies (Build perfect communities)",
-          "Eradicate Poverty & Disease (Solve humanity's core problems)",
-          "Redistribute Global Wealth (Create economic equality)"
-        ]
-      },
-      {
-        name: "Technician",
-        icon: "🤖", // Robot, representing advanced tech
-        specialActions: [
-          "Deploy Advanced Robotics (Integrate automated workforce)",
-          "Integrate Smart Infrastructure (Create self-managing cities)",
-          "Control Global Networks (Manage all digital connectivity)"
-        ]
-      },
-      {
-        name: "Ecologist",
-        icon: "🌳", // Tree, representing nature/environment
-        specialActions: [
-          "Terraform Hostile Regions (Make uninhabitable areas habitable)",
-          "Restore Global Ecosystems (Reverse environmental damage)",
-          "Manipulate Weather Patterns (Control climate for societal benefit)"
-        ]
-      }
-    ]
-  }
-};
-
-
 export const fieldsOfInfluence = {
   governance: {
     name: "Governance & Law",
+    resource: "Power",
     icon: "🏛️", // Classical building/courthouse
     subFields: [
       {
@@ -524,9 +107,10 @@ export const fieldsOfInfluence = {
         ]
       }
     ]
-  },
+  },  //  faith
   economy: {
     name: "Economy & Trade",
+    resource: "Money",
     icon: "💰", // Bag of money
     subFields: [
       {
@@ -632,9 +216,10 @@ export const fieldsOfInfluence = {
         ]
       }
     ]
-  },
+  }, // wealth
   science: {
     name: "Science & Innovation",
+    resource: "Knowledge",
     icon: "🔬", // Microscope
     subFields: [
       {
@@ -740,10 +325,11 @@ export const fieldsOfInfluence = {
         ]
       }
     ]
-  },
-  information: {
-    name: "Information & Media",
-    icon: "📰", // Newspaper
+  },// progress
+  social: {
+    name: "Information & Social Engineering",
+    resource: "Information",
+    icon: "🌐", // Globe with lines, representing interconnected info/society
     subFields: [
       {
         name: "News & Journalism",
@@ -780,7 +366,7 @@ export const fieldsOfInfluence = {
         ]
       },
       {
-        name: "Entertainment & Culture",
+        name: "Arts & Entertainment",
         icon: "🎬", // Clapperboard/Popcorn
         specialActions: [
           "Produce Propagandist Media",
@@ -794,23 +380,6 @@ export const fieldsOfInfluence = {
           "Entertainment Mogul",
           "Global Culture Czar",
           "Dream Weaver"
-        ]
-      },
-      {
-        name: "Data & Analytics",
-        icon: "📊", // Bar chart
-        specialActions: [
-          "Harvest Personal Data",
-          "Profile Key Individuals",
-          "Predict Public Opinion"
-        ],
-        jobs: [
-          "Data Entry Clerk",
-          "Data Analyst",
-          "Chief Data Scientist",
-          "Data Broker CEO",
-          "Global Data Nexus Head",
-          "Information Omnipresence"
         ]
       },
       {
@@ -831,15 +400,32 @@ export const fieldsOfInfluence = {
         ]
       },
       {
-        name: "Covert Intelligence",
+        name: "Public Health & Social Norms",
+        icon: "🏥", // Hospital/Family emoji
+        specialActions: [
+          "Control Medical Research",
+          "Monopolize Pharmaceuticals",
+          "Influence Demographics & Family Values"
+        ],
+        jobs: [
+          "Public Health Worker",
+          "Sociologist",
+          "Bioethicist",
+          "Head of Social Welfare",
+          "Global Norms Regulator",
+          "Societal Engineer"
+        ]
+      },
+      {
+        name: "Covert Intelligence & Data",
         icon: "🕵️", // Spy
         specialActions: [
-          "Launch Disinformation Campaigns",
+          "Harvest Personal Data",
           "Conduct Psychological Operations",
           "Infiltrate Foreign Agencies"
         ],
         jobs: [
-          "Field Operative",
+          "Data Entry Clerk",
           "Analyst",
           "Spymaster",
           "Intelligence Director",
@@ -848,9 +434,10 @@ export const fieldsOfInfluence = {
         ]
       }
     ]
-  },
+  },//  influence
   security: {
     name: "Security & Defense",
+    resource: "Security",
     icon: "🛡️", // Shield
     subFields: [
       {
@@ -956,113 +543,225 @@ export const fieldsOfInfluence = {
         ]
       }
     ]
-  },
-  society: {
-    name: "Society & Culture",
-    icon: "👥", // Silhouettes of people
+  }, // order
+  underworld: {
+    name: "Underworld & Illicit Operations",
+    resource: "Illicit Goods",
+    icon: "🕶️", // Sunglasses/shadowy figure
     subFields: [
       {
-        name: "Public Health",
-        icon: "🏥", // Hospital
+        name: "Organized Crime Syndicates",
+        icon: "🎩", // Hat/mobster
         specialActions: [
-          "Control Medical Research",
-          "Monopolize Pharmaceuticals",
-          "Influence Pandemic Response"
+          "Expand Territory via Racketeering",
+          "Execute Extortion Schemes",
+          "Infiltrate Legitimate Businesses"
         ],
         jobs: [
-          "Nurse",
-          "Doctor",
-          "Hospital Administrator",
-          "Pharmaceutical CEO",
-          "World Health Authority Head",
-          "Biological Overlord"
+          "Street Enforcer",
+          "Gang Lieutenant",
+          "Capo/Boss",
+          "Crime Family Don",
+          "Global Syndicate Head",
+          "Kingpin of Crime"
         ]
       },
       {
-        name: "Religious Institutions",
-        icon: "🛐", // Place of worship
+        name: "Cybercrime & Hacking",
+        icon: " anonymity", // Hacker mask
         specialActions: [
-          "Infiltrate Spiritual Leadership",
-          "Sponsor New Cults",
-          "Manipulate Religious Dogma"
+          "Launch Ransomware Attacks",
+          "Steal Sensitive Data (for blackmail/sale)",
+          "Disrupt Financial Systems (for illicit gain)"
         ],
         jobs: [
-          "Parish Priest/Cleric",
-          "Theologian",
-          "Sect Leader",
-          "Archbishop/Grand Imam",
-          "Head of Global Faith",
-          "Divine Oracle"
+          "Script Kiddie",
+          "Dark Web Analyst",
+          "Exploit Developer",
+          "Cybercrime Ring Leader",
+          "Global Hacking Mastermind",
+          "Digital Ghost"
         ]
       },
       {
-        name: "Family & Social Norms",
-        icon: "👨‍👩‍👧‍👦", // Family emoji
+        name: "Black Markets & Smuggling",
+        icon: "📦", // Box/cargo, illicit trade
         specialActions: [
-          "Promote New Social Paradigms",
-          "Undermine Traditional Structures",
-          "Influence Demographics"
+          "Establish Covert Trade Routes",
+          "Smuggle High-Value Contraband",
+          "Manufacture Counterfeit Goods"
         ],
         jobs: [
-          "Social Worker",
-          "Sociologist",
-          "Cultural Anthropologist",
-          "Family Policy Advisor",
-          "Global Norms Dictator",
-          "Societal Engineer"
+          "Mule",
+          "Runner",
+          "Fence",
+          "Smuggling Kingpin",
+          "Global Black Market Director",
+          "Lord of Shadows"
         ]
       },
       {
-        name: "Arts & Performance",
-        icon: "🎭", // Theater masks
+        name: "Assassination & Coercion",
+        icon: "🔪", // Knife/threat
         specialActions: [
-          "Commission Propaganda Art",
-          "Suppress Dissident Expression",
-          "Control Cultural Events"
+          "Eliminate Key Targets",
+          "Execute Blackmail Operations",
+          "Initiate Targeted Intimidation"
         ],
         jobs: [
-          "Street Artist",
-          "Performer",
-          "Art Curator",
-          "Media Producer",
-          "Global Cultural Minister",
-          "Narrative God"
+          "Hired Muscle",
+          "Information Broker",
+          "Hitman/Cleaner",
+          "Coercion Specialist",
+          "Global Eliminator",
+          "Puppet Master of Fear"
         ]
       },
       {
-        name: "Youth Movements",
-        icon: "🧑‍🎓", // Student/Graduation
+        name: "Corruption & Bribery",
+        icon: "💵", // Money bag
         specialActions: [
-          "Infiltrate Student Organizations",
-          "Sponsor Youth Activism",
-          "Direct Educational Trends"
+          "Bribe High-Level Officials",
+          "Infiltrate Political Parties",
+          "Launder Illicit Funds Through Legitimate Channels"
         ],
         jobs: [
-          "Student Activist",
-          "Youth Counselor",
-          "Campus Organizer",
-          "National Youth Leader",
-          "Global Education Czar",
-          "Future Generation Shaper"
+          "Petty Briber",
+          "Fixer",
+          "Political Contributor",
+          "Influence Peddler",
+          "Global Corruption Architect",
+          "Shadow Patron"
         ]
       },
       {
-        name: "Leisure & Recreation",
-        icon: "🎮", // Game controller
+        name: "Shadow Finance",
+        icon: " hiding", // Briefcase/hidden money
         specialActions: [
-          "Control Global Sports Leagues",
-          "Monopolize Entertainment Media",
-          "Promote Distraction Campaigns"
+          "Establish Offshore Accounts",
+          "Create Shell Corporations",
+          "Manipulate Dark Pools"
         ],
         jobs: [
-          "Game Tester",
-          "Sports Agent",
-          "Entertainment Producer",
-          "Media Conglomerate Executive",
-          "Global Leisure Baron",
-          "Master of Distraction"
+          "Accountant (Offshore)",
+          "Forensic Accountant (Illicit)",
+          "Shell Corp Creator",
+          "Money Launderer",
+          "Global Shadow Banker",
+          "Architect of Hidden Wealth"
         ]
       }
+    ]
+  }   //chaos
+};
+
+export const ideologies = {
+  order: {
+    subIdeologies: [
+      { name: 'totalitarian', icon: '🔗', }, // Chain links, symbolizing complete control/binding
+      { name: 'aristocratic', icon: '⚜️', }, // Fleur-de-lis, symbol of nobility
+      { name: 'militarist', icon: '⚔️', },
+      { name: 'authoritarian', icon: '✊', },
+      { name: 'traditionalist', icon: '🏛️', },
+      { name: 'imperialist', icon: '👑', },
+    ],
+    adjectives: [
+      "Structured",
+      "Disciplined",
+      "Controlled",
+      "Hierarchical",
+      "Regimental",
+      "Unyielding"
+    ]
+  },
+  chaos: {
+    subIdeologies: [
+      { name: 'anarchist', icon: 'Ⓐ', },
+      { name: 'nihilist', icon: '💀', },
+      { name: 'primitivist', icon: '🪵', },
+      { name: 'collectivist', icon: '🤝', },
+      { name: 'rioter', icon: '💥', },
+      { name: 'prepper', icon: '🧰', },
+    ],
+    adjectives: [
+      "Discontent",
+      "Rebellious",
+      "Subversive",
+      "Radical",
+      "Insurgent",
+      "Chaotic"
+    ]
+  },
+  progress: {
+    subIdeologies: [
+      { name: 'utopian', icon: '✨', },
+      { name: 'reformist', icon: '⚖️', },
+      { name: 'technocrat', icon: '⚙️', },
+      { name: 'transhumanist', icon: '🦾', },
+      { name: 'ecologist', icon: '🌳', },
+      { name: 'futurist', icon: '🚀', },
+    ],
+    adjectives: [
+      "Modern",
+      "Adaptive",
+      "Innovative",
+      "Forward-thinking",
+      "Evolving",
+      "Visionary"
+    ]
+  },
+  wealth: {
+    subIdeologies: [
+      { name: 'capitalist', icon: '💰', },
+      { name: 'liberal', icon: '📈', },
+      { name: 'monopolist', icon: '✋', }, // Hand for exclusive control/blocking
+      { name: 'financier', icon: '🏦', },
+      { name: 'elitist', icon: '💎', },
+      { name: 'colonialist', icon: '🗺️', },
+    ],
+    adjectives: [
+      "Profitable",
+      "Affluent",
+      "Materialistic",
+      "Acquisitive",
+      "Strategic",
+      "Dominant"
+    ]
+  },
+  faith: {
+    subIdeologies: [
+      { name: 'jew', icon: '✡️', },
+      { name: 'christian', icon: ' cross', },
+      { name: 'muslim', icon: '☪️', },
+      { name: 'hindu', icon: '🕉️', },
+      { name: 'animist', icon: '🐾', },
+      { name: 'satanist', icon: ' pentagram', },
+    ],
+    adjectives: [
+      "Believing",
+      "Inspirational",
+      "Devout",
+      "Dogmatic",
+      "Unquestioning",
+      "Zealous"
+    ]
+  },
+  influence: {
+    subIdeologies: [
+      { name: 'hedonist', icon: '🥳', },
+      { name: 'new age', icon: '🧘', },
+      { name: 'propagandist', icon: '📢', }, // Loudspeaker for spreading messages
+      { name: 'lodge member', icon: '🔑', }, // Key for secret knowledge/access
+      { name: 'ufologist', icon: '🛸', },
+      { name: 'conspiracy theorist', icon: '👁️', }, // Eye for hidden truths/watching (corrected typo)
+    ],
+    adjectives: [
+      "Guiding",
+      "Subtle",
+      "Persuasive",
+      "Alluring",
+      "Charismatic",
+      "Manipulative"
     ]
   }
 };

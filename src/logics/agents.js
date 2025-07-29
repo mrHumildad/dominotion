@@ -20,6 +20,7 @@ export function generateRandomAgents( n) {
     const gender = Math.random() < 0.5 ? 0 : 1;
     const name = fullName(nationality, gender);
     const ideologyName = getRandomElement(ideologiesList);
+    console.log(ideologiesList, ideologyName)
     let ideologyLevel = Math.floor(Math.random() * 6); // 0-5
     const ideologyData = ideologies[ideologyName];
     //const subIdeology = ideologyData.subIdeologies[Math.floor(Math.random() * ideologyData.subIdeologies.length)];
@@ -29,10 +30,10 @@ export function generateRandomAgents( n) {
     let jobLevel = Math.floor(Math.random() * 6); // 0-5
 
     // Check region's dice sides for matches
-    const regionDice = worldAreas[region].sides;
+    //const regionDice = worldAreas[region].sides;
     let status = "Neutral";
 
-    for (const side of regionDice) {
+    /* for (const side of regionDice) {
       if (
         (side.ideology === ideologyName && side.side === ideologyLevel + 1) ||
         (side.field === fieldName && side.side === jobLevel + 1)
@@ -40,7 +41,7 @@ export function generateRandomAgents( n) {
         status = "Aligned";
         break;
       }
-    }
+    } */
 
     agents.push({
       id: uuidv4(),
@@ -53,9 +54,9 @@ export function generateRandomAgents( n) {
       field: fieldName,
       ideologyValue: ideologyLevel + 1,
       fieldValue: jobLevel + 1,
-      personality: ideologyData.adjectives[ideologyLevel],
-      job: fieldData.jobs[jobLevel],
-      title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
+      //personality: ideologyData.adjectives[ideologyLevel],
+      //job: fieldData.jobs[jobLevel],
+      //title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
       status
     });
   }

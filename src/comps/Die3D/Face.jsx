@@ -1,5 +1,5 @@
 import Pip from './Pip';
-
+import { colors } from '../../logics/data';
 const pipMap = {
   1: ['five'],
   2: ['one', 'nine'],
@@ -26,16 +26,18 @@ const Face = ({value, type, id, name, borders = defaultBorders}) => {
   const pips = pipsPattern.map((pip, index) => {
       return (
         <Pip
-          style={{ gridArea: pip }}
+          style={{ gridArea: pip, backgroundColor: colors[name].opp }}
           key={index}
           pip={pip}
           type={type}
         />
       );
     });
-  let classes ='Face ' + name
+  let classes ='Face '
+  console.log(colors, name, value, type, id)
+  const color = colors[name].main
   return (
-    <div className={classes} id={id + type} /* style={{
+    <div className={classes} style={{backgroundColor: color}} id={id + type} /* style={{
       borderTopColor: borders.top,
     }} */>
       {pips}

@@ -1,3 +1,4 @@
+import { colors } from "./data"
 import { isUpperCase } from "./utils"
 
 export const getNeigh = (tile, matrix) => {
@@ -40,7 +41,10 @@ const right = (tile) => { return { row: tile.row, col: tile.col + 1 } }
 export const tile2Agent = (tile, myAgents) => {
   const agentField = myAgents.find(agent => agent.fieldCell.row === tile.row && agent.fieldCell.col === tile.col)
   const agentIdeo = myAgents.find(agent => agent.ideologyCell.row === tile.row && agent.ideologyCell.col === tile.col)
-  return agentField || agentIdeo
+  if (!agentField && !agentIdeo) return null;
+  if (agentField) return {agent: agentField, type: 'field'}
+  if (agentIdeo) return {agent: agentIdeo, type: 'ideology'}
+  return null
 }
 
 const defaultBorders = {
@@ -50,7 +54,7 @@ const defaultBorders = {
   left: 'black'
 }
 
-export const tileBorders = (tile, matrix, myAgents, currentAgent) => {
+export const tileBorders = (tile, myAgents, currentAgent) => {
   let borders = { ...defaultBorders }; // Use spread to create a new object, not modify the original defaultBorders
 
   if (!currentAgent) {
@@ -60,17 +64,32 @@ export const tileBorders = (tile, matrix, myAgents, currentAgent) => {
   // Helper function to check and set border
   const checkNeighbor = (neighborTileCoords, borderDirection) => {
     const neighborAgent = tile2Agent(neighborTileCoords, myAgents);
-    if (neighborAgent) {
+    console.log(neighborAgent)
+    if (!neighborAgent) {
+      borders[borderDirection] = 'red';
+      return
+    } else if (neighborAgent.agent.id === currentAgent.id /* && 
+        (borderDirection === 'top' || borderDirection === 'left') */) {
+      borders[borderDirection] = 'trasparent'//colors[currentAgent[neighborAgent.type]].main;
+      return
+    } else {
+      borders[borderDirection] = 'green'
+      return
+    }
+    /* if ( neighborAgent[0] || neighborAgent[1]) {
       // If there's an agent in the neighbor cell
-      if (neighborAgent.id !== currentAgent.id) {
-        // And it's a DIFFERENT agent
-        borders[borderDirection] = 'white';
+      if ( neighborAgent[0].id == currentAgent.id ) {
+        borders[borderDirection] = colors[neighborAgent[0].ideology];       // If it's the SAME agent
+      } else if ( neighborAgent[1].id == currentAgent.id) {
+        borders[borderDirection] = colors[neighborAgent[1].field];
+      } else {
+        borders[borderDirection] = 'green';
       }
-      // If it's the SAME agent, we do nothing, default border applies (or whatever was set before)
+      
     } else {
       // If there's NO agent in the neighbor cell
       borders[borderDirection] = 'red';
-    }
+    } */
   };
 
   // Check all four neighbors

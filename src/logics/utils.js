@@ -71,5 +71,5 @@ import { colors } from "./data";
 export   const getAreaColor = (area) => {
     const AreaIdeology = area.sides[5].ideology;
     //console.log(colors.ideologies[AreaIdeology])
-    return colors.ideologies[AreaIdeology]
+    return colors.ideologies[AreaIdeology].des
   }

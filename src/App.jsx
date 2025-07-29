@@ -3,7 +3,7 @@ import {worldMapMatrix} from './logics/worldMapMatrix.js'
 import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
 import { findAreaByChar } from './logics/utils.js';
-import {colors, worldAreas} from './logics/data.js'
+import {colors, desatColors} from './logics/data.js'
 import { getPossibleRotations, tileBorders, tile2Agent} from './logics/matrix_utils.js';
 import Agent from './comps/Agent.jsx';
 import './App.css'
@@ -14,6 +14,7 @@ import Face from './comps/Die3D/Face.jsx';
 
 function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
+  const [phase, setPhase] = useState('INIT');
   const [selectedCell, setSelectedCell] = useState(null);
   const [selectedPool, setSelectedPool] = useState(null);
   const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
@@ -93,8 +94,9 @@ const tiles = matrix.map((row, rowIndex) => {
         );
 
       const area = findAreaByChar(cell);
-      const cellCol = colors.ideologies[area.sides[5].ideology];
-      const cellBorders = tileBorders({row: rowIndex, col: colIndex}, matrix, myAgents, currentMyAgent);
+      //console.log(colors, [area.sides[5].ideology])
+      const cellCol = colors[area.sides[5].ideology].des;
+      const cellBorders = tileBorders({row: rowIndex, col: colIndex}, myAgents, currentMyAgent);
       return (
         <div
           key={`${rowIndex}-${colIndex}`}
@@ -175,11 +177,13 @@ const tiles = matrix.map((row, rowIndex) => {
         <div className='butts'>
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
           <button onClick={() => setAgentsPool(generateRandomAgents(3))}>REROLL ALL</button>
+          <button onClick={() => setPhase('TRAVEL')}>Travel</button>
         </div>
       </div>
       </div>
       <div className='selected-agent'>
-        {selectedPool && <span>{selectedPool.name + " - " +  selectedPool.title}</span>}
+        {/* {selectedPool && <span>{selectedPool.name + " - " +  selectedPool.title}</span>} */}
+        {selectedPool && <span>{`${selectedPool.name} - ${selectedPool.field}, ${selectedPool.ideology}`}</span>}
       </div>
     </div>
      
