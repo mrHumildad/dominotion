@@ -75,7 +75,8 @@ body {
   display: flex;
   border: 1px solid red;
 }
-.agents-pool {
+.rigth-panel {
+  height: 100%;
   display: flex;
   border: 1px solid red;
   
@@ -84,7 +85,7 @@ body {
   align-items: center;
   width: 60%;
 }
-.side-panel {
+.left-panel {
   width: 40%;
   height: 100%;
   display: flex;

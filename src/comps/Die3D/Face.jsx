@@ -20,9 +20,9 @@ const defaultBorders = {
 }
 
 const Face = ({value, type, id, name, borders = defaultBorders}) => {
+  //console.log(value, type, id, name)
   const totalPips = value;
   const pipsPattern = pipMap[totalPips];
-  ///console.log('usedpips', usedPips)
   const pips = pipsPattern.map((pip, index) => {
       return (
         <Pip
@@ -34,7 +34,7 @@ const Face = ({value, type, id, name, borders = defaultBorders}) => {
       );
     });
   let classes ='Face '
-  console.log(colors, name, value, type, id)
+  //console.log(colors, name, value, type, id)
   const color = colors[name].main
   return (
     <div className={classes} style={{backgroundColor: color}} id={id + type} /* style={{

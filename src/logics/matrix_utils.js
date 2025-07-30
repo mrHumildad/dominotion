@@ -54,17 +54,31 @@ const defaultBorders = {
   left: 'black'
 }
 
-export const tileBorders = (tile, myAgents, currentAgent) => {
+export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   let borders = { ...defaultBorders }; // Use spread to create a new object, not modify the original defaultBorders
+  const areaChar = matrix[tile.row][tile.col];
+  const checkAreaBorder = (char, coord, borderDirection, matrix) => {
+    
+    if (matrix[coord.row][coord.col] === char) {
+      borders[borderDirection] = 'black';
+    } else {
+      console.log(matrix[coord.row][coord.col], char)
+      borders[borderDirection] = 'white';
+    }
+  }
 
   if (!currentAgent) {
+    checkAreaBorder(areaChar, top(tile), 'top', matrix)
+    checkAreaBorder(areaChar, left(tile), 'left', matrix)
+    checkAreaBorder(areaChar, down(tile), 'bottom', matrix)
+    checkAreaBorder(areaChar, right(tile), 'right', matrix)
     return borders;
   }
 
   // Helper function to check and set border
   const checkNeighbor = (neighborTileCoords, borderDirection) => {
     const neighborAgent = tile2Agent(neighborTileCoords, myAgents);
-    console.log(neighborAgent)
+    //console.log(neighborAgent)
     if (!neighborAgent) {
       borders[borderDirection] = 'red';
       return

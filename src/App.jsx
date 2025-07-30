@@ -16,7 +16,7 @@ function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
   const [phase, setPhase] = useState('INIT');
   const [selectedCell, setSelectedCell] = useState(null);
-  const [selectedPool, setSelectedPool] = useState(null);
+  const [selectedAgent, setSelectedAgent] = useState(null);
   const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
   const [myAgents, setMyAgents] = useState([]);
   const [deployedAgent, setDeployedAgent] = useState({
@@ -26,21 +26,48 @@ function App() {
   });
   //myAgents.map(agent => console.log(agent.fieldCell, agent.ideologyCell))
   //console.log('pool', agentsPool)
+  const travelClick = () => {
+    setDeployedAgent({
+      ideology: {col: null, row: null},
+      field: {col: null, row: null},
+      rotation: null
+    })
+    setSelectedAgent(null)
+    if (phase === 'TRAVEL') {
+      setPhase('INIT');
+      return;
+    }
+    setPhase('TRAVEL')
+  }
   const cellClick = ({row, col}) => {
     console.log('row', row, 'col', col)
     console.log(tile2Agent({row, col}, myAgents))
+
     if (matrix[row][col] === 'w') return;
+
+    if (phase === 'TRAVEL' && !selectedAgent) {
+      const agentToSelect = tile2Agent({row, col}, myAgents); // Get the agent here
+      if(agentToSelect) { // Check if an agent was found
+        console.log('selected agent', agentToSelect); // Use the local variable here
+        let traveler = myAgents.find(agent => agent.id === agentToSelect.agent.id) // Use agentToSelect
+        traveler.fieldCell = {row: null, col: null}
+        traveler.ideologyCell = {row: null, col: null}
+        console.log(traveler);
+        setSelectedAgent(traveler); // Set the state
+        setMyAgents([...myAgents.filter(agent => agent.id !== traveler.id), traveler])
+      }
+    }
     if (deployedAgent && deployedAgent.field.row === row && deployedAgent.field.col === col) {
-      let myNewAgent = {...selectedPool, ideologyCell: deployedAgent.ideology, fieldCell: deployedAgent.field}
+      let myNewAgent = {...selectedAgent, ideologyCell: deployedAgent.ideology, fieldCell: deployedAgent.field}
       console.log('my new agent', myNewAgent)
-      setMyAgents([...myAgents, myNewAgent])
+      setMyAgents([...myAgents.filter(a => a.id !== myNewAgent.id), myNewAgent])
       setAgentsPool(agentsPool.filter(agent => agent.id !== myNewAgent.id))
       setDeployedAgent({
         ideology: {col: null, row: null},
         field: {col: null, row: null},
         rotation: null
       })
-      setSelectedPool(null)
+      setSelectedAgent(null)
       return
     };
     if (deployedAgent && deployedAgent.ideology.row === row && deployedAgent.ideology.col === col) {
@@ -56,7 +83,7 @@ function App() {
       )
       return;
     }
-    if (selectedPool) {
+    if (selectedAgent) {
       const rotations = getPossibleRotations({ideo: {row, col}, matrix, myAgents})
       //console.log(rotations)
       setDeployedAgent({ideology: {row, col}, field: rotations[0] })
@@ -65,8 +92,9 @@ function App() {
   }
   const agentClick = (agent) => {
     //console.log(agent)
-    setSelectedPool(agent)
-  }
+    setSelectedAgent(agent)
+  };
+  const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
 const tiles = matrix.map((row, rowIndex) => {
     return row.map((cell, colIndex) => {
       const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex;
@@ -96,7 +124,7 @@ const tiles = matrix.map((row, rowIndex) => {
       const area = findAreaByChar(cell);
       //console.log(colors, [area.sides[5].ideology])
       const cellCol = colors[area.sides[5].ideology].des;
-      const cellBorders = tileBorders({row: rowIndex, col: colIndex}, myAgents, currentMyAgent);
+      const cellBorders = tileBorders({row: rowIndex, col: colIndex}, myAgents, currentMyAgent, matrix);
       return (
         <div
           key={`${rowIndex}-${colIndex}`}
@@ -114,14 +142,14 @@ const tiles = matrix.map((row, rowIndex) => {
           {/* Render deployed agent's ideology or field */}
           {isDeployedIdeology && (
             <Face
-              value={selectedPool.ideologyValue}
+              value={selectedAgent.ideologyValue}
               type='ideology'
-              id={selectedPool.id}
-              name={selectedPool.ideology}
+              id={selectedAgent.id}
+              name={selectedAgent.ideology}
             />
           )}
           {isDeployedField && (
-            <Face value={selectedPool.fieldValue} type='field' id={selectedPool.id} name={selectedPool.field} />
+            <Face value={selectedAgent.fieldValue} type='field' id={selectedAgent.id} name={selectedAgent.field} />
           )}
 
           {/* Render myAgent's ideology or field if present at this cell */}
@@ -146,6 +174,7 @@ const tiles = matrix.map((row, rowIndex) => {
       );
     });
   });
+  console.log(selectedAgent)
   return (
     <div id='App'>
       <span id='game-title'>World DominOtion</span>
@@ -168,25 +197,23 @@ const tiles = matrix.map((row, rowIndex) => {
       </TransformWrapper>
       </div>
       <div className='bottom'>
-        <div className='agents-pool'>
-        {agentsPool.map((agent, index) => (
-          <Agent key={agent.id} agent={agent} agentClick={agentClick}/>
-        ))}
+        <div className='rigth-panel'>
+        {phase === 'INIT' && pool}
+        {(phase === 'TRAVEL' && selectedAgent) && <Agent agent={selectedAgent} agentClick={agentClick} />}
       </div>
-      <div className='side-panel'>
+      <div className='left-panel'>
         <div className='butts'>
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
           <button onClick={() => setAgentsPool(generateRandomAgents(3))}>REROLL ALL</button>
-          <button onClick={() => setPhase('TRAVEL')}>Travel</button>
+          <button onClick={travelClick}>Travel</button>
         </div>
       </div>
       </div>
       <div className='selected-agent'>
-        {/* {selectedPool && <span>{selectedPool.name + " - " +  selectedPool.title}</span>} */}
-        {selectedPool && <span>{`${selectedPool.name} - ${selectedPool.field}, ${selectedPool.ideology}`}</span>}
+        {/* {selectedAgent && <span>{selectedAgent.name + " - " +  selectedAgent.title}</span>} */}
+        {selectedAgent && <span>{`${selectedAgent.name} - ${selectedAgent.field}, ${selectedAgent.ideology}`}</span>}
       </div>
     </div>
-     
   )
 }
 
