@@ -3,7 +3,8 @@ import {worldMapMatrix} from './logics/worldMapMatrix.js'
 import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
 import { findAreaByChar } from './logics/utils.js';
-import {colors, desatColors} from './logics/data.js'
+import {colors, desatColors, worldAreas} from './logics/data.js';
+import { AgentDescription } from './logics/agents.js';
 import { getPossibleRotations, tileBorders, tile2Agent} from './logics/matrix_utils.js';
 import Agent from './comps/Agent.jsx';
 import './App.css'
@@ -14,9 +15,11 @@ import Face from './comps/Die3D/Face.jsx';
 
 function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
+  const [week, setWeek] = useState(0);
   const [phase, setPhase] = useState('INIT');
   const [selectedCell, setSelectedCell] = useState(null);
   const [selectedAgent, setSelectedAgent] = useState(null);
+  const [deployableArea, setDeployableArea] = useState(null);
   const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
   const [myAgents, setMyAgents] = useState([]);
   const [deployedAgent, setDeployedAgent] = useState({
@@ -24,6 +27,7 @@ function App() {
     field: {col: null, row: null},
     rotation: null
   });
+
   //myAgents.map(agent => console.log(agent.fieldCell, agent.ideologyCell))
   //console.log('pool', agentsPool)
   const travelClick = () => {
@@ -93,12 +97,14 @@ function App() {
   const agentClick = (agent) => {
     //console.log(agent)
     setSelectedAgent(agent)
+    setDeployableArea(agent.region)
   };
   const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
-const tiles = matrix.map((row, rowIndex) => {
+  const tiles = matrix.map((row, rowIndex) => {
+    const deployablechar = deployableArea ? worldAreas[deployableArea].char : null;
     return row.map((cell, colIndex) => {
       const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex;
-
+      const isDeployable = cell === deployablechar;
       // Find if any of 'myAgents' has its ideology or field at the current cell
       const currentMyAgent = myAgents.find(
         (agent) =>
@@ -110,8 +116,8 @@ const tiles = matrix.map((row, rowIndex) => {
         deployedAgent && deployedAgent.ideology.row === rowIndex && deployedAgent.ideology.col === colIndex;
       const isDeployedField =
         deployedAgent && deployedAgent.field.row === rowIndex && deployedAgent.field.col === colIndex;
-
-      if (cell === 'w')
+     // console.log(cell)
+      if (cell === ' ')
         return (
           <div
             className='tile water'
@@ -122,8 +128,9 @@ const tiles = matrix.map((row, rowIndex) => {
         );
 
       const area = findAreaByChar(cell);
-      //console.log(colors, [area.sides[5].ideology])
-      const cellCol = colors[area.sides[5].ideology].des;
+     // console.log(colors, cell)
+     // console.log(colors, [area.sides[5].ideology])
+      const cellCol = isDeployable ? colors[area.sides[5].ideology].main : colors[area.sides[5].ideology].des;
       const cellBorders = tileBorders({row: rowIndex, col: colIndex}, myAgents, currentMyAgent, matrix);
       return (
         <div
@@ -211,7 +218,7 @@ const tiles = matrix.map((row, rowIndex) => {
       </div>
       <div className='selected-agent'>
         {/* {selectedAgent && <span>{selectedAgent.name + " - " +  selectedAgent.title}</span>} */}
-        {selectedAgent && <span>{`${selectedAgent.name} - ${selectedAgent.field}, ${selectedAgent.ideology}`}</span>}
+        {selectedAgent && <span>{AgentDescription(selectedAgent)}</span>}
       </div>
     </div>
   )

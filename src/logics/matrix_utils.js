@@ -62,7 +62,7 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
     if (matrix[coord.row][coord.col] === char) {
       borders[borderDirection] = 'black';
     } else {
-      console.log(matrix[coord.row][coord.col], char)
+      //console.log(matrix[coord.row][coord.col], char)
       borders[borderDirection] = 'white';
     }
   }
