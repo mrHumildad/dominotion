@@ -14,7 +14,7 @@ export const getNeigh = (tile, matrix) => {
   return neigh
 }
 
-export const getPossibleRotations = ({ideo, matrix, myAgents}) => {
+export const getPossibleRotations = ({ideo, matrix, myAgents, char}) => {
   //console.log(myAgents)
   const rowLenght = matrix[0].length
   const colLenght = matrix.length
@@ -22,13 +22,20 @@ export const getPossibleRotations = ({ideo, matrix, myAgents}) => {
   const col = ideo.col
   let candidates = []
   if (row + 1 < colLenght && isUpperCase(matrix[row + 1][col]) && !myAgents.find(agent => agent.fieldCell.row === row + 1 && agent.fieldCell.col === col) && !myAgents.find(agent => agent.ideologyCell.row === row + 1 && agent.ideologyCell.col === col)) 
-    candidates.push({ row: row + 1, col })
+    if (matrix[row + 1][col] === char)
+      candidates.push({ row: row + 1, col })
+  
   if (col + 1 < rowLenght && isUpperCase(matrix[row][col + 1]) && !myAgents.find(agent => agent.fieldCell.row === row && agent.fieldCell.col === col + 1) && !myAgents.find(agent => agent.ideologyCell.row === row && agent.ideologyCell.col === col + 1)) 
-    candidates.push({ row, col: col + 1 })
+    if (matrix[row][col + 1] === char)
+      candidates.push({ row, col: col + 1 })
+  
   if (row - 1 >= 0 && isUpperCase(matrix[row - 1][col]) && !myAgents.find(agent => agent.fieldCell.row === row - 1 && agent.fieldCell.col === col) && !myAgents.find(agent => agent.ideologyCell.row === row - 1 && agent.ideologyCell.col === col))
-    candidates.push({ row: row - 1, col })
+    if(matrix[row - 1][col] === char)
+      candidates.push({ row: row - 1, col })
+  
   if (col - 1 >= 0 && isUpperCase(matrix[row][col - 1]) && !myAgents.find(agent => agent.fieldCell.row === row && agent.fieldCell.col === col - 1) && !myAgents.find(agent => agent.ideologyCell.row === row && agent.ideologyCell.col === col - 1)) 
-    candidates.push({ row, col: col - 1 })
+    if(matrix[row][col - 1] === char)
+      candidates.push({ row, col: col - 1 })
 
   return candidates
 }

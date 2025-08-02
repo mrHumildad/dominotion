@@ -13,10 +13,10 @@ export function generateRandomAgents( n) {
   const fieldsList = Object.keys(fields);
   const agents = [];
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < n; i++) {/* area */
 
-    const region = Object.keys(worldAreas)[Math.floor(Math.random() * Object.keys(worldAreas).length)];
-    const nationality = 'us';//getRandomElement(worldAreas[region].nationalities); 
+    const area = Object.keys(worldAreas)[Math.floor(Math.random() * Object.keys(worldAreas).length)];
+    const nationality = 'us';//getRandomElement(worldAreas[area].nationalities); 
     const gender = Math.random() < 0.5 ? 0 : 1;
     const name = fullName(nationality, gender);
 
@@ -32,11 +32,11 @@ export function generateRandomAgents( n) {
     //console.log(subField)
     let jobLevel = Math.floor(Math.random() * 6); // 0-5
     const job = subField.jobs[jobLevel];
-    // Check region's dice sides for matches
-    //const regionDice = worldAreas[region].sides;
+    // Check area's dice sides for matches
+    //const areaDice = worldAreas[area].sides;
     let status = "Neutral";
 
-    /* for (const side of regionDice) {
+    /* for (const side of areaDice) {
       if (
         (side.ideology === ideologyName && side.side === ideologyLevel + 1) ||
         (side.field === fieldName && side.side === jobLevel + 1)
@@ -49,7 +49,7 @@ export function generateRandomAgents( n) {
     agents.push({
       id: uuidv4(),
       name,
-      region,
+      area,
       gender,
 
       ideology: ideologyName,
@@ -83,7 +83,7 @@ export const AgentDescription = (agent) => {
   ' ' + agent.ideologyAdj + 
   ' ' + agent.subIdeology.name + 
   ' ' + agent.job + 
-  ' from ' + agent.region;
+  ' from ' + agent.area;
 }
 //generateRandomAgents();
 

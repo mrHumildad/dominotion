@@ -27,14 +27,14 @@ function App() {
     field: {col: null, row: null},
     rotation: null
   });
-
+  console.log('myAgents', myAgents, deployableArea, selectedAgent, deployedAgent)
   //myAgents.map(agent => console.log(agent.fieldCell, agent.ideologyCell))
   //console.log('pool', agentsPool)
   const travelClick = () => {
     setDeployedAgent({
       ideology: {col: null, row: null},
       field: {col: null, row: null},
-      rotation: null
+      rotation: 0
     })
     setSelectedAgent(null)
     if (phase === 'TRAVEL') {
@@ -47,8 +47,8 @@ function App() {
     console.log('row', row, 'col', col)
     console.log(tile2Agent({row, col}, myAgents))
 
-    if (matrix[row][col] === 'w') return;
-
+    if (matrix[row][col] === ' ') return;
+    //  click to cell to travel agent
     if (phase === 'TRAVEL' && !selectedAgent) {
       const agentToSelect = tile2Agent({row, col}, myAgents); // Get the agent here
       if(agentToSelect) { // Check if an agent was found
@@ -61,6 +61,7 @@ function App() {
         setMyAgents([...myAgents.filter(agent => agent.id !== traveler.id), traveler])
       }
     }
+    // click todeploy agent
     if (deployedAgent && deployedAgent.field.row === row && deployedAgent.field.col === col) {
       let myNewAgent = {...selectedAgent, ideologyCell: deployedAgent.ideology, fieldCell: deployedAgent.field}
       console.log('my new agent', myNewAgent)
@@ -69,27 +70,34 @@ function App() {
       setDeployedAgent({
         ideology: {col: null, row: null},
         field: {col: null, row: null},
-        rotation: null
+        rotation: 0
       })
       setSelectedAgent(null)
       return
     };
+    // click to rotate agent
     if (deployedAgent && deployedAgent.ideology.row === row && deployedAgent.ideology.col === col) {
-      const rotations = getPossibleRotations({ideo: deployedAgent.ideology, matrix, myAgents})
+      const char = phase === 'TRAVEL' ? '*' : deployableArea.char
+      const rotations = getPossibleRotations({ideo: deployedAgent.ideology, matrix, myAgents, char})
       //console.log(rotations)
       const next = rotations[deployedAgent.rotation + 1]
       setDeployedAgent(
         {
           ideology: deployedAgent.ideology,
           field: next ? next : rotations[0],
-          rotation:next ? deployedAgent.rotation + 1 : 0
+          rotation: next ? deployedAgent.rotation + 1 : 0
         }
       )
       return;
     }
+    // try to deploy on cellfrom pool or travel 
     if (selectedAgent) {
-      const rotations = getPossibleRotations({ideo: {row, col}, matrix, myAgents})
+      console.log('deploying agent', matrix[row][col], deployableArea.char)
+      if (matrix[row][col] !== deployableArea.char) return;
+      const char = phase === 'TRAVEL' ? '*' : deployableArea.char
+      const rotations = getPossibleRotations({ideo: {row, col, rotation: 0}, matrix, myAgents, char})
       //console.log(rotations)
+      if (rotations.length === 0) return;
       setDeployedAgent({ideology: {row, col}, field: rotations[0] })
     }
     setSelectedCell({row, col})
@@ -97,11 +105,16 @@ function App() {
   const agentClick = (agent) => {
     //console.log(agent)
     setSelectedAgent(agent)
-    setDeployableArea(agent.region)
+    setDeployedAgent({
+      ideology: {col: null, row: null},
+      field: {col: null, row: null},
+      rotation: 0
+      })
+    setDeployableArea(worldAreas[agent.area])
   };
   const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
   const tiles = matrix.map((row, rowIndex) => {
-    const deployablechar = deployableArea ? worldAreas[deployableArea].char : null;
+    const deployablechar = deployableArea ? deployableArea.char : null;
     return row.map((cell, colIndex) => {
       const isSelected = selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex;
       const isDeployable = cell === deployablechar;
