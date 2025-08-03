@@ -57,7 +57,7 @@ export const isUpperCase = (char) => {
   return char === char.toUpperCase();
 }
 export  const getAreaNameFromChar = (char) => {
-  console.log(char)
+  //console.log(char)
   for (const [name, data] of Object.entries(worldAreas)) {
     if (data.char === char) {
       return name;

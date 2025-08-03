@@ -5,7 +5,7 @@ import { generateRandomAgents } from './logics/agents.js';
 import { findAreaByChar } from './logics/utils.js';
 import {colors, desatColors, worldAreas} from './logics/data.js';
 import { AgentDescription } from './logics/agents.js';
-import { getPossibleRotations, tileBorders, tile2Agent} from './logics/matrix_utils.js';
+import { getPossibleRotations, tileBorders, tile2Agent, getRndSpawn} from './logics/matrix_utils.js';
 import Agent from './comps/Agent.jsx';
 import './App.css'
 import './comps/Die3D/bigDie.css'
@@ -27,9 +27,7 @@ function App() {
     field: {col: null, row: null},
     rotation: null
   });
-  console.log('myAgents', myAgents, deployableArea, selectedAgent, deployedAgent)
-  //myAgents.map(agent => console.log(agent.fieldCell, agent.ideologyCell))
-  //console.log('pool', agentsPool)
+  console.log(myAgents, deployableArea, selectedAgent, deployedAgent)
   const travelClick = () => {
     setDeployedAgent({
       ideology: {col: null, row: null},
@@ -43,6 +41,22 @@ function App() {
     }
     setPhase('TRAVEL')
   }
+  const spawn2rnd = () => {
+    if (!selectedAgent) return ;
+    const cells = getRndSpawn(matrix, myAgents, deployableArea.char);
+    console.log(cells)
+    let myNewAgent = {...selectedAgent, ideologyCell: cells.ideology, fieldCell: cells.field}
+      console.log('my new agent', myNewAgent)
+      setMyAgents([...myAgents.filter(a => a.id !== myNewAgent.id), myNewAgent])
+      setAgentsPool(agentsPool.filter(agent => agent.id !== myNewAgent.id))
+      setDeployedAgent({
+        ideology: {col: null, row: null},
+        field: {col: null, row: null},
+        rotation: 0
+      })
+      setSelectedAgent(null)
+      return
+  }
   const cellClick = ({row, col}) => {
     console.log('row', row, 'col', col)
     console.log(tile2Agent({row, col}, myAgents))
@@ -52,11 +66,11 @@ function App() {
     if (phase === 'TRAVEL' && !selectedAgent) {
       const agentToSelect = tile2Agent({row, col}, myAgents); // Get the agent here
       if(agentToSelect) { // Check if an agent was found
-        console.log('selected agent', agentToSelect); // Use the local variable here
+        //console.log('selected agent', agentToSelect); // Use the local variable here
         let traveler = myAgents.find(agent => agent.id === agentToSelect.agent.id) // Use agentToSelect
         traveler.fieldCell = {row: null, col: null}
         traveler.ideologyCell = {row: null, col: null}
-        console.log(traveler);
+        //console.log(traveler);
         setSelectedAgent(traveler); // Set the state
         setMyAgents([...myAgents.filter(agent => agent.id !== traveler.id), traveler])
       }
@@ -113,6 +127,23 @@ function App() {
     setDeployableArea(worldAreas[agent.area])
   };
   const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
+  
+/*   const matrixRows = matrix.length;
+  const matrixCols = matrix[0].length;
+  console.log('matrix', matrix, 'rows', matrixRows, 'cols', matrixCols)
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  console.log('window', windowWidth, 'x', windowHeight)
+  let tileWIdth = '4vh';
+  let tileHeight = '4vh';
+  if (windowWidth >= windowHeight) {
+    tileWIdth = '2vw';
+    tileHeight = tileWIdth;
+  }/*  else {
+    tileHeight = '2'vh';
+    tileWIdth = tileHeight;
+  } */ 
+  
   const tiles = matrix.map((row, rowIndex) => {
     const deployablechar = deployableArea ? deployableArea.char : null;
     return row.map((cell, colIndex) => {
@@ -154,7 +185,7 @@ function App() {
             borderTopColor: cellBorders.top,
             borderRightColor: cellBorders.right,
             borderBottomColor: cellBorders.bottom,
-            borderLeftColor: cellBorders.left
+            borderLeftColor: cellBorders.left,
           }}
           className={`tile ${isSelected ? 'selected' : ''}`}
           onClick={() => cellClick({ row: rowIndex, col: colIndex })}
@@ -194,10 +225,14 @@ function App() {
       );
     });
   });
-  console.log(selectedAgent)
+
   return (
     <div id='App'>
-      <span id='game-title'>World DominOtion</span>
+      <div className='top'>
+        <span id='game-title'>World DominOtion</span>
+        <span id='week'>Week: {week}</span> 
+        <span id='phase'>Phase: {phase}</span>
+      </div>
       <div id='worldMap'>
       <TransformWrapper
       initialScale={1}
@@ -226,6 +261,7 @@ function App() {
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
           <button onClick={() => setAgentsPool(generateRandomAgents(3))}>REROLL ALL</button>
           <button onClick={travelClick}>Travel</button>
+          <button onClick={spawn2rnd}>Spawn</button>
         </div>
       </div>
       </div>

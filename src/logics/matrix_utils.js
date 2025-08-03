@@ -1,5 +1,5 @@
 import { colors } from "./data"
-import { isUpperCase } from "./utils"
+import { isUpperCase, findAreaByChar } from "./utils"
 
 export const getNeigh = (tile, matrix) => {
   const rowLenght = matrix[0].length
@@ -64,13 +64,16 @@ const defaultBorders = {
 export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   let borders = { ...defaultBorders }; // Use spread to create a new object, not modify the original defaultBorders
   const areaChar = matrix[tile.row][tile.col];
+  const area = findAreaByChar(areaChar);
+  const ideology = areaChar === ' ' ? null : area.sides[5].ideology;
+  const borderColor = ideology ? colors[ideology].main : 'black'; // Default to black if no color found
   const checkAreaBorder = (char, coord, borderDirection, matrix) => {
     
-    if (matrix[coord.row][coord.col] === char) {
+    if (matrix[coord.row][coord.col] === char /* || matrix[coord.row][coord.col] === char */) {
       borders[borderDirection] = 'black';
     } else {
       //console.log(matrix[coord.row][coord.col], char)
-      borders[borderDirection] = 'white';
+      borders[borderDirection] = borderColor;
     }
   }
 
@@ -91,7 +94,8 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
       return
     } else if (neighborAgent.agent.id === currentAgent.id /* && 
         (borderDirection === 'top' || borderDirection === 'left') */) {
-      borders[borderDirection] = 'trasparent'//colors[currentAgent[neighborAgent.type]].main;
+      const tileType =  neighborAgent.type === 'field' ? 'ideology' : 'field';  
+      borders[borderDirection] = colors[currentAgent[tileType]].main;
       return
     } else {
       borders[borderDirection] = 'green'
@@ -122,3 +126,29 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   return borders;
 };
 
+export const getRndSpawn = (matrix, myAgents, char, ) => {
+  const rowLenght = matrix[0].length;
+  const colLenght = matrix.length;
+  let row, col;
+  do {
+    row = Math.floor(Math.random() * colLenght);
+    col = Math.floor(Math.random() * rowLenght);
+  } while (
+    matrix[row][col] !== char || 
+    myAgents.find(agent => agent.fieldCell.row === row && agent.fieldCell.col === col) || 
+    myAgents.find(agent => agent.ideologyCell.row === row && agent.ideologyCell.col === col) ||
+    getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char }).length === 0
+  );
+  console.log( { row, col });
+  const rotations = getPossibleRotations({ ideo: { row, col }, matrix, myAgents, char });
+  const rotation = rotations[Math.floor(Math.random() * rotations.length)];
+  return { ideo: { row, col }, field: rotation };
+}
+
+
+
+
+
+/* const findfirstNeighbor = (tile, matrix, myAgents) => {
+
+} */

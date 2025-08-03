@@ -16,7 +16,20 @@ export const desatColors = {
     green: "#A0B5A0",   // Desaturated Lime Green
     blue: "#8080A8"   // Desaturated Medium Blue
 };
-
+export const perfectMatches = {
+    "governance": "faith",
+    "faith": "governance",
+    "economy": "wealth",
+    "wealth": "economy",
+    "science": "progress",
+    "progress": "science",
+    "social": "influence",
+    "influence": "social",
+    "security": "order",
+    "order": "security",
+    "underworld": "chaos",
+    "chaos": "underworld"
+}
 export const colors = {
     // Governance & Law <-> Faith (Using Theocratic/Crimson colors)
     governance: {

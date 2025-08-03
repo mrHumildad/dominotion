@@ -76,7 +76,7 @@ export function generateRandomAgents( n) {
 }
 
 export const AgentDescription = (agent) => {
-  console.log(agent)
+  //console.log(agent)
   return agent.name + 
   agent.subIdeology.icon + 
   agent.subField.icon +
@@ -87,3 +87,28 @@ export const AgentDescription = (agent) => {
 }
 //generateRandomAgents();
 
+export const agenstConnection = (agent1, agent2, type1, type2) => {
+  const sameType = type1 === type2;
+  const value1 = agent1[type1 + 'Value'];
+  const value2 = agent2[type2 + 'Value'];
+  const sameValue = value1 === value2;
+  let connection = {
+    sameType,
+    sameValue,
+  }
+  if (sameType) {
+    if (type1 === 'field') {
+      connection.sameField = agent1.field === agent2.field;
+      connection.sameSubField = agent1.subField === agent2.subField;
+    }
+    if (type1 === 'ideology') {
+      connection.sameIdeology = agent1.ideology === agent2.ideology;
+      connection.sameSubIdeology = agent1.subIdeology === agent2.subIdeology;
+    }
+  }
+  console.log('connection', agent1.name, agent2.name, connection);
+  return connection;
+}
+/*   export const calcConnection = (connection) => {
+
+} */
