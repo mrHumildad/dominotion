@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {worldMapMatrix} from './logics/worldMapMatrix.js'
 import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
 import { findAreaByChar } from './logics/utils.js';
-import {colors, desatColors, worldAreas} from './logics/data.js';
+import {colors, fields, worldAreas} from './logics/data.js';
 import { AgentDescription } from './logics/agents.js';
 import { getPossibleRotations, tileBorders, tile2Agent, getRndSpawn} from './logics/matrix_utils.js';
 import Agent from './comps/Agent.jsx';
+import AgentInfo from './comps/AgentInfo.jsx';
 import './App.css'
 import './comps/Die3D/bigDie.css'
 import './comps/Die3D/Die3D.css'
@@ -20,14 +21,46 @@ function App() {
   const [selectedCell, setSelectedCell] = useState(null);
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [deployableArea, setDeployableArea] = useState(null);
-  const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
+  const [agentsPool, setAgentsPool] = useState([]);
+/*   const [agentsPool, setAgentsPool] = useState(() => generateRandomAgents(3));
+ */  
   const [myAgents, setMyAgents] = useState([]);
+  const initialResources = Object.values(fields).reduce((acc, field) => {
+    acc[field.resource] = 0;
+    return acc;
+  }, {});
+  const [myResources, setMyResources] = useState(initialResources);  
   const [deployedAgent, setDeployedAgent] = useState({
     ideology: {col: null, row: null},
     field: {col: null, row: null},
     rotation: null
   });
-  console.log(myAgents, deployableArea, selectedAgent, deployedAgent)
+  console.log('******', 'myAgents', myAgents, /* 'deployableArea',deployableArea ,*/ 'selectedAgent',selectedAgent, 'pool', agentsPool, /* deployedAgent, myResources */)
+
+  useEffect(() => {
+    generateRandomAgents(3).then(setAgentsPool);
+  }, []);
+  
+
+    // Update an agent's imgUrl by id in an array, returns a new array
+/* 
+  function handleAgentImageUpdate(agentId, newImgUrl) {
+    console.log('Updating agent', agentId, 'with img', newImgUrl);
+    // Update in agentsPool
+    setAgentsPool(prev =>
+      prev.map(agent =>
+        agent.id === agentId ? { ...agent, imgUrl: newImgUrl } : agent
+      )
+    );
+    // Update in myAgents
+    setMyAgents(prev =>
+      prev.map(agent =>
+        agent.id === agentId ? { ...agent, imgUrl: newImgUrl } : agent
+      )
+    );
+    // Update selectedAgent if it's the same agent
+    setSelectedAgent(null);
+  } */
   const travelClick = () => {
     setDeployedAgent({
       ideology: {col: null, row: null},
@@ -127,7 +160,11 @@ function App() {
     setDeployableArea(worldAreas[agent.area])
   };
   const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
-  
+/*   const addImage = (agent, array) => {
+    const newArray = [...array];
+    const index = newArray.findIndex(a => a.id === agent.id);
+    const imgUrl = agent.imgUrl; */
+
 /*   const matrixRows = matrix.length;
   const matrixCols = matrix[0].length;
   console.log('matrix', matrix, 'rows', matrixRows, 'cols', matrixCols)
@@ -257,17 +294,18 @@ function App() {
         {(phase === 'TRAVEL' && selectedAgent) && <Agent agent={selectedAgent} agentClick={agentClick} />}
       </div>
       <div className='left-panel'>
-        <div className='butts'>
+        {selectedAgent && <AgentInfo agent={selectedAgent}/>}
+        {/* <div className='butts'>
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
           <button onClick={() => setAgentsPool(generateRandomAgents(3))}>REROLL ALL</button>
           <button onClick={travelClick}>Travel</button>
           <button onClick={spawn2rnd}>Spawn</button>
-        </div>
+        </div> */}
       </div>
       </div>
       <div className='selected-agent'>
         {/* {selectedAgent && <span>{selectedAgent.name + " - " +  selectedAgent.title}</span>} */}
-        {selectedAgent && <span>{AgentDescription(selectedAgent)}</span>}
+        {selectedAgent && <span>{}</span>}
       </div>
     </div>
   )
@@ -275,4 +313,3 @@ function App() {
 
 export default App
 
-      

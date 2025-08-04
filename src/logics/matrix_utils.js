@@ -126,23 +126,27 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   return borders;
 };
 
-export const getRndSpawn = (matrix, myAgents, char, ) => {
+export const getRndSpawn = (matrix, myAgents, char) => {
   const rowLenght = matrix[0].length;
   const colLenght = matrix.length;
   let row, col;
+  let tries = 0;
   do {
     row = Math.floor(Math.random() * colLenght);
     col = Math.floor(Math.random() * rowLenght);
+    tries++;
+    if (tries > 1000) throw new Error("No valid spawn found");
   } while (
-    matrix[row][col] !== char || 
-    myAgents.find(agent => agent.fieldCell.row === row && agent.fieldCell.col === col) || 
-    myAgents.find(agent => agent.ideologyCell.row === row && agent.ideologyCell.col === col) ||
-    getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char }).length === 0
+    matrix[row][col] !== char ||
+    myAgents.some(agent =>
+      (agent.fieldCell.row === row && agent.fieldCell.col === col) ||
+      (agent.ideologyCell.row === row && agent.ideologyCell.col === col)
+    ) ||
+    getPossibleRotations({ ideo: { row, col }, matrix, myAgents, char }).length === 0
   );
-  console.log( { row, col });
   const rotations = getPossibleRotations({ ideo: { row, col }, matrix, myAgents, char });
   const rotation = rotations[Math.floor(Math.random() * rotations.length)];
-  return { ideo: { row, col }, field: rotation };
+  return { ideology: { row, col }, field: rotation };
 }
 
 

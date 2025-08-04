@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
+import useAgentPollinationImage from '../hooks/useAgentPollinationImage.js';
+import { usePollinationsImage, usePollinationsText } from '@pollinations/react';
 
-import { ideologies, fields, worldAreas } from "./data.js";
+import { ideologies, fields, worldAreas, colors } from "./data.js";
 import { firstName, lastName, fullName } from 'full-name-generator';
 
 
@@ -8,7 +10,22 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function generateRandomAgents( n) {
+ const agentImagePrompt = (agent) => {
+  const area = worldAreas[agent.area];
+    const color = colors[area.sides[5].ideology].main;
+    const style = 'cgi prerendered';
+    const sex = agent.gender === 0 ? 'male' : 'female';
+    const prompt = `A ${style} image of a ${sex}  ${agent.ideologyAdj} ${agent.subIdeology.name} ${agent.job} from ${agent.area}, ${area.description} The image should reflect the agent's ideology and job, showcasing their unique characteristics and environment. main color of background should be ${color}`;
+  return prompt;
+}
+
+const agentCuriosityPrompt = (agent) => {
+  const area = worldAreas[agent.area];
+  const sex = agent.gender === 0 ? 'male' : 'female';
+  const prompt = `Generate a frase that is always said by a ${sex} ${agent.ideologyAdj} ${agent.subIdeology.name} ${agent.job} from ${agent.area}, ${area.description} for a ${sex} character`;
+  return prompt;
+}
+export async function generateRandomAgents( n) {
   const ideologiesList = Object.keys(ideologies);
   const fieldsList = Object.keys(fields);
   const agents = [];
@@ -29,46 +46,51 @@ export function generateRandomAgents( n) {
     const fieldName = getRandomElement(fieldsList); // 0–5
     const fieldData = fields[fieldName];
     const subField = fieldData.subFields[Math.floor(Math.random() * fieldData.subFields.length)];
-    //console.log(subField)
     let jobLevel = Math.floor(Math.random() * 6); // 0-5
     const job = subField.jobs[jobLevel];
-    // Check area's dice sides for matches
-    //const areaDice = worldAreas[area].sides;
     let status = "Neutral";
 
-    /* for (const side of areaDice) {
-      if (
-        (side.ideology === ideologyName && side.side === ideologyLevel + 1) ||
-        (side.field === fieldName && side.side === jobLevel + 1)
-      ) {
-        status = "Aligned";
-        break;
-      }
-    } */
 
-    agents.push({
+    let newagent = {
       id: uuidv4(),
       name,
       area,
       gender,
-
+      
       ideology: ideologyName,
       ideologyValue: ideologyLevel + 1,
       subIdeology,
       ideologyAdj,
-
+      
       field: fieldName,
       fieldValue: jobLevel + 1,
       subField,
       job,
-
+      
       fieldCell: null,
       ideologyCell: null,
       //personality: ideologyData.adjectives[ideologyLevel],
       //job: fieldData.jobs[jobLevel],
       //title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
-      status
-    });
+      status,
+    };
+    newagent.imgUrl = 'https://pollinations.ai/p/' + agentImagePrompt(newagent);
+    const curiosityUrl = `https://text.pollinations.ai/${encodeURIComponent(agentCuriosityPrompt(newagent))}`;
+try {
+  const res = await fetch(curiosityUrl);
+  newagent.curiosity = await res.text();
+} catch {
+  newagent.curiosity = 'No curiosity available.';
+}
+    /* newagent.imgUrl = usePollinationsImage(agentImagePrompt(newagent), {
+      width: 400,
+      height: 400,
+      seed: 42,
+      model: 'turbo',
+      nologo: true,
+      enhance: false
+    }); */
+    agents.push(newagent);
   }
 
   console.log(agents);
@@ -77,10 +99,7 @@ export function generateRandomAgents( n) {
 
 export const AgentDescription = (agent) => {
   //console.log(agent)
-  return agent.name + 
-  agent.subIdeology.icon + 
-  agent.subField.icon +
-  ' ' + agent.ideologyAdj + 
+  return agent.ideologyAdj + 
   ' ' + agent.subIdeology.name + 
   ' ' + agent.job + 
   ' from ' + agent.area;
