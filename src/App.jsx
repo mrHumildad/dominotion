@@ -13,6 +13,10 @@ import './comps/Die3D/bigDie.css'
 import './comps/Die3D/Die3D.css'
 import Face from './comps/Die3D/Face.jsx';
 
+const phases = [
+  'IINT-LODING',
+]
+
 
 function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
@@ -305,7 +309,7 @@ function App() {
       </div>
       <div className='selected-agent'>
         {/* {selectedAgent && <span>{selectedAgent.name + " - " +  selectedAgent.title}</span>} */}
-        {selectedAgent && <span>{}</span>}
+        {<span>{}</span>}
       </div>
     </div>
   )

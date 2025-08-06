@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import useAgentPollinationImage from '../hooks/useAgentPollinationImage.js';
 import { usePollinationsImage, usePollinationsText } from '@pollinations/react';
-
+import { agentImageURL, agentCuriosityURL } from './pollination_IA.js';
 import { ideologies, fields, worldAreas, colors } from "./data.js";
 import { firstName, lastName, fullName } from 'full-name-generator';
 
@@ -10,21 +10,7 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
- const agentImagePrompt = (agent) => {
-  const area = worldAreas[agent.area];
-    const color = colors[area.sides[5].ideology].main;
-    const style = 'cgi prerendered';
-    const sex = agent.gender === 0 ? 'male' : 'female';
-    const prompt = `A ${style} image of a ${sex}  ${agent.ideologyAdj} ${agent.subIdeology.name} ${agent.job} from ${agent.area}, ${area.description} The image should reflect the agent's ideology and job, showcasing their unique characteristics and environment. main color of background should be ${color}`;
-  return prompt;
-}
 
-const agentCuriosityPrompt = (agent) => {
-  const area = worldAreas[agent.area];
-  const sex = agent.gender === 0 ? 'male' : 'female';
-  const prompt = `Generate a frase that is always said by a ${sex} ${agent.ideologyAdj} ${agent.subIdeology.name} ${agent.job} from ${agent.area}, ${area.description} for a ${sex} character`;
-  return prompt;
-}
 export async function generateRandomAgents( n) {
   const ideologiesList = Object.keys(ideologies);
   const fieldsList = Object.keys(fields);
@@ -49,13 +35,16 @@ export async function generateRandomAgents( n) {
     let jobLevel = Math.floor(Math.random() * 6); // 0-5
     const job = subField.jobs[jobLevel];
     let status = "Neutral";
-
+    const race = getRandomElement(['white', 'black', 'asian', 'hispanic', 'middle-eastern', 'indian']);
+    const age = Math.floor(Math.random() * (100 - 18 + 1)) + 18; // Random age between 18 and 60
 
     let newagent = {
       id: uuidv4(),
       name,
       area,
       gender,
+      race,
+      age,
       
       ideology: ideologyName,
       ideologyValue: ideologyLevel + 1,
@@ -74,15 +63,18 @@ export async function generateRandomAgents( n) {
       //title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
       status,
     };
-    newagent.imgUrl = 'https://pollinations.ai/p/' + agentImagePrompt(newagent);
-    const curiosityUrl = `https://text.pollinations.ai/${encodeURIComponent(agentCuriosityPrompt(newagent))}`;
+    newagent.imgUrl = agentImageURL(newagent);
+
+    const curiosityUrl = agentCuriosityURL(newagent);
+    newagent.curiosityUrl = curiosityUrl;
+    // Use Pollinations to fetch the curiosity text`;
 try {
   const res = await fetch(curiosityUrl);
   newagent.curiosity = await res.text();
 } catch {
   newagent.curiosity = 'No curiosity available.';
 }
-    /* newagent.imgUrl = usePollinationsImage(agentImagePrompt(newagent), {
+    /* newagent.imgUrl = usePollinationsImage(agentImageURL(newagent), {
       width: 400,
       height: 400,
       seed: 42,
