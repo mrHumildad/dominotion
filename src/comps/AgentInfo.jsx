@@ -4,13 +4,18 @@ const AgentInfo = ({agent }) => {
   console.log('agent info; ', agent)
   return (
     <div className="agent-info">
-      <div className="agent-info-text">
-        <span>{agent.name}</span>
-        <p>{AgentDescription(agent)}</p>
-        <p>{agent.curiosity}</p>
+      <div className="a">
+        <div className="agent-info-text">
+        <span className="agent-info-name">{agent.name.toUpperCase()}</span>
+        <span className="agent-info-ideology">{agent.ideologyAdj + ' ' + agent.subIdeology.name + ' [' + agent.ideology + ']' }</span>
+        <spam className="agent-info-job">{agent.job + ' [' + agent.field + ']'}</spam>
+
+        </div>
+        <span className="agent-info-curiosity">{agent.curiosity}</span>
       </div>
-      <img  className="agent-info-img" src={agent.imgUrl} width="400" alt="" />
-      {/* <PollinationImage agent={agent} handleAgentImageUpdate={handleAgentImageUpdate}/> */}
+      <div className="agent-image-container">
+        <img  className="agent-info-img" src={agent.imgUrl} alt="" />
+      </div>
     </div>
   );
 }

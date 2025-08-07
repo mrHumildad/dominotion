@@ -13,9 +13,14 @@ import './comps/Die3D/bigDie.css'
 import './comps/Die3D/Die3D.css'
 import Face from './comps/Die3D/Face.jsx';
 
-const phases = [
-  'IINT-LODING',
-]
+const tutorials = {
+  INIT: 'SELECCIONA UN AGENTE Y DESPLIEGALO EN EL MUNDO CLICKANDO EN SU AREA DE ORIGEN',
+}
+
+const conf = {
+  poolSize: 3,
+  startingAgents: 5,
+}
 
 
 function App() {
@@ -39,32 +44,17 @@ function App() {
     field: {col: null, row: null},
     rotation: null
   });
-  console.log('******', 'myAgents', myAgents, /* 'deployableArea',deployableArea ,*/ 'selectedAgent',selectedAgent, 'pool', agentsPool, /* deployedAgent, myResources */)
+    const [transform, setTransform] = useState({
+    scale: 1,
+    positionX: 0,
+    positionY: 0,
+  });
+  //console.log('******', 'myAgents', myAgents, /* 'deployableArea',deployableArea ,*/ 'selectedAgent',selectedAgent, 'pool', agentsPool, /* deployedAgent, myResources */)
 
   useEffect(() => {
     generateRandomAgents(3).then(setAgentsPool);
   }, []);
   
-
-    // Update an agent's imgUrl by id in an array, returns a new array
-/* 
-  function handleAgentImageUpdate(agentId, newImgUrl) {
-    console.log('Updating agent', agentId, 'with img', newImgUrl);
-    // Update in agentsPool
-    setAgentsPool(prev =>
-      prev.map(agent =>
-        agent.id === agentId ? { ...agent, imgUrl: newImgUrl } : agent
-      )
-    );
-    // Update in myAgents
-    setMyAgents(prev =>
-      prev.map(agent =>
-        agent.id === agentId ? { ...agent, imgUrl: newImgUrl } : agent
-      )
-    );
-    // Update selectedAgent if it's the same agent
-    setSelectedAgent(null);
-  } */
   const travelClick = () => {
     setDeployedAgent({
       ideology: {col: null, row: null},
@@ -274,25 +264,26 @@ function App() {
         <span id='week'>Week: {week}</span> 
         <span id='phase'>Phase: {phase}</span>
       </div>
-      <div id='worldMap'>
-      <TransformWrapper
-      initialScale={1}
-      initialPositionX={200}
-      initialPositionY={100}
-      >
-      {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
-        <>
-          <TransformComponent>
-            <div className="world-map" style={{ display: 'grid', gridTemplateColumns: `repeat(${matrix[0].length}, 1fr)` }}>
-        {tiles}
-        
+      <div>
+        <TransformWrapper
+          scale={transform.scale}
+          positionX={transform.positionX}
+          positionY={transform.positionY}
+          onZoomStop={({ scale }) => setTransform(t => ({ ...t, scale }))}
+          onPanningStop={({ positionX, positionY }) => setTransform(t => ({ ...t, positionX, positionY }))}
+        >
+          {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
+            <>
+              <TransformComponent>
+                <div id='worldMap' style={{ display: 'grid', gridTemplateColumns: `repeat(${matrix[0].length}, 1fr)` }}>
+                  {tiles}
+                </div>
+              </TransformComponent>
+            </>
+          )}
+        </TransformWrapper>
       </div>
-          </TransformComponent>
-        </>
-      )}
-      </TransformWrapper>
-      </div>
-      <div className='bottom'>
+      <div className='panels'>
         <div className='rigth-panel'>
         {phase === 'INIT' && pool}
         {(phase === 'TRAVEL' && selectedAgent) && <Agent agent={selectedAgent} agentClick={agentClick} />}
@@ -307,10 +298,7 @@ function App() {
         </div> */}
       </div>
       </div>
-      <div className='selected-agent'>
-        {/* {selectedAgent && <span>{selectedAgent.name + " - " +  selectedAgent.title}</span>} */}
-        {<span>{}</span>}
-      </div>
+        {<div id='bottom-line'>{tutorials[phase]}</div>}
     </div>
   )
 }
