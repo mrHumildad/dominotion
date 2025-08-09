@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import {worldMapMatrix} from './logics/worldMapMatrix.js'
 import { TransformWrapper,TransformComponent} from "react-zoom-pan-pinch";
 import { generateRandomAgents } from './logics/agents.js';
-import { findAreaByChar } from './logics/utils.js';
+import { findAreaByChar, months} from './logics/utils.js';
 import {colors, fields, worldAreas} from './logics/data.js';
 import { AgentDescription } from './logics/agents.js';
 import { getPossibleRotations, tileBorders, tile2Agent, getRndSpawn} from './logics/matrix_utils.js';
@@ -14,18 +14,21 @@ import './comps/Die3D/Die3D.css'
 import Face from './comps/Die3D/Face.jsx';
 
 const tutorials = {
-  INIT: 'SELECCIONA UN AGENTE Y DESPLIEGALO EN EL MUNDO CLICKANDO EN SU AREA DE ORIGEN',
+  INIT: 'SELECCIONA UN AGENTEPARA VER SU INFO Y EVIDENCIAR SU AREA DE ORIGEN',
+  RNDDEPLY: 'HAZ CLICK EN EL AREA DE ORIGEN DEL AGENTE PARA DESPLEGARLO',
 }
 
 const conf = {
   poolSize: 3,
   startingAgents: 5,
+  startingYear: 2030,
 }
 
 
 function App() {
   const [matrix, setMatrix] = useState(worldMapMatrix);
-  const [week, setWeek] = useState(0);
+  const [year, setYear] = useState(conf.startingYear);
+  const [month, setMonth] = useState(0);
   const [phase, setPhase] = useState('INIT');
   const [selectedCell, setSelectedCell] = useState(null);
   const [selectedAgent, setSelectedAgent] = useState(null);
@@ -153,7 +156,7 @@ function App() {
       })
     setDeployableArea(worldAreas[agent.area])
   };
-  const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick}/>)
+  const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick} selectedAgent={selectedAgent}/>)
 /*   const addImage = (agent, array) => {
     const newArray = [...array];
     const index = newArray.findIndex(a => a.id === agent.id);
@@ -256,12 +259,16 @@ function App() {
       );
     });
   });
-
+  const panelStyle = {
+        color: selectedAgent ? colors[worldAreas[selectedAgent.area].sides[5].ideology].opp : '#333',
+        backgroundColor: selectedAgent ? colors[worldAreas[selectedAgent.area].sides[5].ideology].main : '#333',
+        
+      }
   return (
     <div id='App'>
       <div className='top'>
         <span id='game-title'>World DominOtion</span>
-        <span id='week'>Week: {week}</span> 
+        <span id='date'>{months[month] + ' ' + year}</span> 
         <span id='phase'>Phase: {phase}</span>
       </div>
       <div>
@@ -288,7 +295,7 @@ function App() {
         {phase === 'INIT' && pool}
         {(phase === 'TRAVEL' && selectedAgent) && <Agent agent={selectedAgent} agentClick={agentClick} />}
       </div>
-      <div className='left-panel'>
+      <div className='left-panel' style={panelStyle}>
         {selectedAgent && <AgentInfo agent={selectedAgent}/>}
         {/* <div className='butts'>
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>
@@ -298,7 +305,7 @@ function App() {
         </div> */}
       </div>
       </div>
-        {<div id='bottom-line'>{tutorials[phase]}</div>}
+        {<div id='bottom'>{tutorials[phase]}</div>}
     </div>
   )
 }

@@ -1,3 +1,8 @@
+export const months = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+];
+
 export function desaturateHex(hex, desaturation = 0.5) {
   // Clamp desaturation between 0 (no change) and 1 (fully grey)
   desaturation = Math.max(0, Math.min(1, desaturation));

@@ -9,9 +9,13 @@
 }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Workbench", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+/*   font-variation-settings:
+    "BLED" 4,
+    "SCAN" 10; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #333;
@@ -57,10 +61,13 @@ body {
   overflow: scroll;
   height: 85vh;
 }
-.top {
+.top, #bottom {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  padding-left: 3vw;
+  padding-right: 3vw;
   height: 5vh;
 }
 .tile {
@@ -111,10 +118,35 @@ body {
 .agent-info {
   display: flex;
   flex-direction: row;
+/*   align-items: center;
+  justify-content: center; */
+  width: 100%;
+}
+
+.agent-data {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  
+  padding: 1vh;
+}
+
+.agent-info-name {
+  font-size: 4vh;
+  font-weight: bolder;
+  margin-bottom: 0.6vh;
+}
+.agent-info-curiosity {
+  font-size: 2.5vh;
+  margin-top: 1vh;
+  font-style: italic;
+}
+
+.agent-info-ideology, .agent-info-job {
+  font-size: 2.5vh;
+  margin: 0.5vh 0;
+  font-weight: bold;
 }
 
 .agent-info-text {
@@ -125,18 +157,18 @@ body {
   width: 50%;
 }
 
-.agent-image-container {
-  width: 20vw;
-  height: 20vw;
+/* .agent-image-container {
+  width: 20vh;
+  height: 20v;
   border-radius: 10%;
   margin-right: 1vw;
-}
+} */
 
 .agent-info-img, .agent-image-container {
-  width: 20vw;
-  height: 20vw;
-  border-radius: 10%;
-  margin-right: 1vw;
+  width: 25vh;
+  height: 25vh;
+  
+  /* margin-right: 1vh; */
 }
 .butts {
   display: flex;

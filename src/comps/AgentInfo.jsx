@@ -4,14 +4,11 @@ const AgentInfo = ({agent }) => {
   console.log('agent info; ', agent)
   return (
     <div className="agent-info">
-      <div className="a">
-        <div className="agent-info-text">
-        <span className="agent-info-name">{agent.name.toUpperCase()}</span>
-        <span className="agent-info-ideology">{agent.ideologyAdj + ' ' + agent.subIdeology.name + ' [' + agent.ideology + ']' }</span>
-        <spam className="agent-info-job">{agent.job + ' [' + agent.field + ']'}</spam>
-
-        </div>
-        <span className="agent-info-curiosity">{agent.curiosity}</span>
+      <div className="agent-data">
+        <div className="agent-info-name">{agent.name.toUpperCase()}</div>
+          <span className="agent-info-ideology">{agent.ideologyAdj + ' ' + agent.subIdeology.name + ' [' + agent.ideology.toUpperCase() + ']' }</span>
+          <span className="agent-info-job">{agent.job + ' [' + agent.field.toUpperCase() + ']'}</span>
+           <div className="agent-info-curiosity">{agent.curiosity}</div>
       </div>
       <div className="agent-image-container">
         <img  className="agent-info-img" src={agent.imgUrl} alt="" />
