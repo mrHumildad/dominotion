@@ -53,28 +53,9 @@ export function desaturateHex(hex, desaturation = 0.5) {
   const toHex = (x) => Math.round(x * 255).toString(16).padStart(2, '0');
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
-import { worldAreas } from "./data";
-export const findAreaByChar = (char) => {
-    if (char === 'w') return null;
-    return Object.values(worldAreas).find(area => area.char === char);
-  };
+
+
 export const isUpperCase = (char) => {
   return char === char.toUpperCase();
 }
-export  const getAreaNameFromChar = (char) => {
-  //console.log(char)
-  for (const [name, data] of Object.entries(worldAreas)) {
-    if (data.char === char) {
-      return name;
-    }
-  }
-  return null; // not found
-};
 
-import { colors } from "./data";
-
-export   const getAreaColor = (area) => {
-    const AreaIdeology = area.sides[5].ideology;
-    //console.log(colors.ideologies[AreaIdeology])
-    return colors.ideologies[AreaIdeology].des
-  }

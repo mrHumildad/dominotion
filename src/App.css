@@ -87,7 +87,7 @@ body {
 
 .panels {
   height: 25vh;
-  position: relative;
+  /* position: relative; */
   width: 100%;
   display: flex;
 }
@@ -122,14 +122,25 @@ body {
   justify-content: center; */
   width: 100%;
 }
-
+.agent-info-big {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
 .agent-data {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 1vh;
+  padding-left: 1vh;
+  padding-right: 1vh;
+
 }
 
 .agent-info-name {
@@ -170,6 +181,14 @@ body {
   
   /* margin-right: 1vh; */
 }
+
+.agent-info-img-big, .agent-image-container-big {
+  width: 100vh;
+  height: 100vh;
+  
+  /* margin-right: 1vh; */
+}
+
 .butts {
   display: flex;
   height: 100%;

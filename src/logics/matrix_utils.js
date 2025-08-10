@@ -1,9 +1,40 @@
 import { colors } from "./data"
-import { isUpperCase, findAreaByChar } from "./utils"
+import { isUpperCase,  } from "./utils"
 
-export const getNeigh = (tile, matrix) => {
+export const findAreaByChar = (char) => {
+    if (char === 'w') return null;
+    return Object.values(worldAreas).find(area => area.char === char);
+};
+
+const directions = {
+  top: (tile, n) => ({ row: tile.row - n, col: tile.col }),
+  down: (tile, n) => ({ row: tile.row + n, col: tile.col }),
+  left: (tile, n) => ({ row: tile.row, col: tile.col - n }),
+  right: (tile, n) => ({ row: tile.row, col: tile.col + n }),
+  topleft: (tile, n) => ({ row: tile.row - n, col: tile.col - n }),
+  topright: (tile, n) => ({ row: tile.row - n, col: tile.col + n }),
+  bottomleft: (tile, n) => ({ row: tile.row + n, col: tile.col - n }),
+  bottomright: (tile, n) => ({ row: tile.row + n, col: tile.col + n }),
+};
+
+/* export const getNeigh = (tile, matrix) => {
   const rowLenght = matrix[0].length
   const colLenght = matrix.length
+  return [
+    directions.down(tile, 1),
+    directions.right(tile, 1),
+    directions.top(tile, 1),
+    directions.left(tile, 1),
+/*     directions.topleft(tile, 1),
+    directions.topright(tile, 1),
+    directions.bottomleft(tile, 1),
+    directions.bottomright(tile, 1) 
+  ].filter(neigh => 
+    neigh.row >= 0 && neigh.row < colLenght && 
+    neigh.col >= 0 && neigh.col < rowLenght
+  );
+}; */
+/*   ]
   const row = tile.row
   const col = tile.col
   const neigh = []
@@ -13,13 +44,13 @@ export const getNeigh = (tile, matrix) => {
   if (col + 1 < rowLenght) neigh.push()
   return neigh
 }
-
-export const getPossibleRotations = ({ideo, matrix, myAgents, char}) => {
+ */
+export const getPossibleRotations = ({ideology, matrix, myAgents, char}) => {
   //console.log(myAgents)
   const rowLenght = matrix[0].length
   const colLenght = matrix.length
-  const row = ideo.row
-  const col = ideo.col
+  const row = ideology.row
+  const col = ideology.col
   let candidates = []
   if (row + 1 < colLenght && isUpperCase(matrix[row + 1][col]) && !myAgents.find(agent => agent.fieldCell.row === row + 1 && agent.fieldCell.col === col) && !myAgents.find(agent => agent.ideologyCell.row === row + 1 && agent.ideologyCell.col === col)) 
     if (matrix[row + 1][col] === char)
@@ -39,11 +70,6 @@ export const getPossibleRotations = ({ideo, matrix, myAgents, char}) => {
 
   return candidates
 }
-
-const top = (tile) => { return { row: tile.row - 1, col: tile.col } }
-const down = (tile) => { return { row: tile.row + 1, col: tile.col } }
-const left = (tile) => { return { row: tile.row, col: tile.col - 1 } }
-const right = (tile) => { return { row: tile.row, col: tile.col + 1 } }
 
 export const tile2Agent = (tile, myAgents) => {
   const agentField = myAgents.find(agent => agent.fieldCell.row === tile.row && agent.fieldCell.col === tile.col)
@@ -78,10 +104,10 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   }
 
   if (!currentAgent) {
-    checkAreaBorder(areaChar, top(tile), 'top', matrix)
-    checkAreaBorder(areaChar, left(tile), 'left', matrix)
-    checkAreaBorder(areaChar, down(tile), 'bottom', matrix)
-    checkAreaBorder(areaChar, right(tile), 'right', matrix)
+    checkAreaBorder(areaChar, directions.top(tile, 1), 'top', matrix)
+    checkAreaBorder(areaChar, directions.left(tile, 1), 'left', matrix)
+    checkAreaBorder(areaChar, directions.down(tile, 1), 'bottom', matrix)
+    checkAreaBorder(areaChar, directions.right(tile, 1), 'right', matrix)
     return borders;
   }
 
@@ -118,15 +144,28 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   };
 
   // Check all four neighbors
-  checkNeighbor(top(tile), 'top');
-  checkNeighbor(right(tile), 'right');
-  checkNeighbor(down(tile), 'bottom');
-  checkNeighbor(left(tile), 'left');
+  checkNeighbor(directions.top(tile, 1), 'top');
+  checkNeighbor(directions.right(tile, 1), 'right');
+  checkNeighbor(directions.down(tile, 1), 'bottom');
+  checkNeighbor(directions.left(tile, 1), 'left');
 
   return borders;
 };
 
-export const getRndSpawn = (matrix, myAgents, char) => {
+export const getRndSpawn = (matrix, agents, char) => {
+  const areaCells = getAreaCells(char, matrix)
+  console.log(areaCells.length, areaCells[0])
+
+} 
+  /* .filter(cell => {
+    return !myAgents.some(agent =>
+      (agent.fieldCell.row === cell.row && agent.fieldCell.col === cell.col) ||
+      (agent.ideologyCell.row === cell.row && agent.ideologyCell.col === cell.col)
+    ) && getPossibleRotations({ ideology: { row: cell.row, col: cell.col }, matrix, myAgents, char }).length > 0;
+  })
+  return areaCells.sort(() => Math.random() - 0.5)[0]; // Shuffle and take the first one
+  }; */
+/*   if (areaCells.length === 0) throw new Error("No valid spawn found");
   const rowLenght = matrix[0].length;
   const colLenght = matrix.length;
   let row, col;
@@ -142,13 +181,42 @@ export const getRndSpawn = (matrix, myAgents, char) => {
       (agent.fieldCell.row === row && agent.fieldCell.col === col) ||
       (agent.ideologyCell.row === row && agent.ideologyCell.col === col)
     ) ||
-    getPossibleRotations({ ideo: { row, col }, matrix, myAgents, char }).length === 0
+    getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char }).length === 0
   );
-  const rotations = getPossibleRotations({ ideo: { row, col }, matrix, myAgents, char });
+  const rotations = getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char });
   const rotation = rotations[Math.floor(Math.random() * rotations.length)];
   return { ideology: { row, col }, field: rotation };
+} */
+
+export const getAreaCells = (char, matrix) => {
+  const cells = [];
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[row].length; col++) {
+      if (matrix[row][col] === char) {
+        cells.push({ row, col });
+      }
+    }
+  }
+  return cells;
 }
 
+export const logAreas = (matrix) => {
+  const areas = {};
+  for (let row = 0; row < matrix.length; row++) {
+    for (let col = 0; col < matrix[row].length; col++) {
+      const char = matrix[row][col];
+      if (!areas[char]) {
+        areas[char] = [];
+      }
+      areas[char].push({ row, col });
+    }
+  }
+  for (const char in areas) {
+    console.log(`Area ${char}:`, areas[char].length);
+  }
+  console.log(areas);
+  return areas;
+}
 
 
 

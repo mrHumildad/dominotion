@@ -2,8 +2,8 @@ import React from 'react';
 import Face from './Die3D/Face';
 import './Agent.css'
 const Agent = ({agent, agentClick, selectedAgent}) => {
-  console.log('agent', agent)
-  console.log('selected agent', selectedAgent)
+  //console.log('agent', agent)
+  //console.log('selected agent', selectedAgent)
   let opacity = 1;
   if (selectedAgent && selectedAgent.id !== agent.id) {
     opacity = 0.3;
