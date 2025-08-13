@@ -11,7 +11,7 @@ function getRandomElement(arr) {
 }
 
 
-export async function generateRandomAgents( n) {
+export async function generateRandomAgents(n) {
   const ideologiesList = Object.keys(ideologies);
   const fieldsList = Object.keys(fields);
   const agents = [];

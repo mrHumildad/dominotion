@@ -1,4 +1,4 @@
-import { colors, worldAreas } from "./data";
+import { colors, ideologies, worldAreas } from "./data";
 
  function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -19,13 +19,23 @@ import { colors, worldAreas } from "./data";
   return url;
 }
 
-
-
-
 export const agentCuriosityURL = (agent) => {
   const randomSeed = Math.floor(Math.random() * 1000);
   const sex = agent.gender === 0 ? 'male' : 'female';
   const prompt = `Generate a short frase in spanish (give just it in "") that is always said by a ${sex} ${agent.ideologyAdj} ${agent.subIdeology.name} ${agent.job} for a character of a game. The frase should reflect the agent's ideology and job, showcasing their unique characteristics. The frase should be short, no more than 15 words.`;
   const url = 'https://text.pollinations.ai/' + encodeURIComponent(prompt) + '?seed=' + randomSeed;
   return url;
+}
+
+export const areasRND = (areas) => {
+  const newAreas = Object.keys(areas).map(a => {
+    const area = areas[a];
+    console.log(area)
+    const ideology = area.sides[5].ideology;
+    console.log(ideology);
+    const subIdeology = ideologies[ideology].subIdeologies[Math.floor(Math.random() * ideologies[ideology].subIdeologies.length)];
+    return ({...area, ideology, subIdeology });
+  })
+  console.log(newAreas)
+  return newAreas;
 }

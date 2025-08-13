@@ -54,7 +54,6 @@ export function desaturateHex(hex, desaturation = 0.5) {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
-
 export const isUpperCase = (char) => {
   return char === char.toUpperCase();
 }

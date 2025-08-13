@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import Header from './comps/Header.jsx';
 import { worldMapMatrix } from './logics/worldMapMatrix.js';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { generateRandomAgents } from './logics/agents.js';
 import { months } from './logics/utils.js';
-import { fields, colors, worldAreas } from './logics/data.js';
+import { fields, colors, worldAreas, ideologies} from './logics/data.js';
 import { getPossibleRotations, tile2Agent, getRndSpawn } from './logics/matrix_utils.js';
 import WorldMap from './comps/WorldMap.jsx'; // Assuming you create this
 import ControlPanel from './comps/ControlPanel.jsx'; // Assuming you create this
@@ -27,10 +28,17 @@ const resetDeployed = {
   rotation: null,
 };
 
-const initialResources = Object.values(fields).reduce((acc, field) => {
-    acc[field.resource] = 0;
-    return acc;
-  }, {});
+const initialResources = () => {
+  let resources = {};
+  for (const key in fields) {
+    if (Object.prototype.hasOwnProperty.call(fields, key)) {
+      //const res = fields[key];
+      //console.log(res)
+      resources[key] = 0
+    }
+  }
+  return resources;
+}
 
 // Custom hook to handle all game state and logic
 const useGameLogic = () => {
@@ -46,7 +54,9 @@ const useGameLogic = () => {
   const [myAgents, setMyAgents] = useState([]);
   const [myResources, setMyResources] = useState(initialResources);
   const [deployedAgent, setDeployedAgent] = useState(resetDeployed);
+  const [areas, setAreas] = useState(worldAreas)
   useEffect(() => {
+    
     generateRandomAgents(conf.poolSize).then(setAgentsPool);
   }, []);
   const spawn2rnd = () => {
@@ -85,7 +95,7 @@ const useGameLogic = () => {
     }
     setSelectedAgent(agent);
     setDeployedAgent(resetDeployed);
-    setDeployableArea(worldAreas[agent.area]);
+    setDeployableArea(areas[agent.area]);
     setPhase('INITDEPLOY');
   };
   const cellClick = ({row, col}) => {
@@ -143,7 +153,7 @@ const useGameLogic = () => {
       if (deployedAgent && deployedAgent.ideology.row === row && deployedAgent.ideology.col === col) {
         const char = phase === 'TRAVEL' ? '*' : deployableArea.char
         const rotations = getPossibleRotations({ideology: deployedAgent.ideology, matrix, myAgents, char})
-        //console.log(rotations)
+        console.log(rotations)
         const next = rotations[deployedAgent.rotation + 1]
         setDeployedAgent(
           {
@@ -179,6 +189,8 @@ const useGameLogic = () => {
     myAgents,
     deployedAgent,
     showBigImg,
+    myResources,
+    setMyResources,
     handleImageClick,
     travelClick,
     agentClick,
@@ -198,6 +210,9 @@ const App =() => {
     myAgents,
     deployedAgent,
     showBigImg,
+    myResources,
+    areas,
+    setMyResources,
     handleImageClick,
     travelClick,
     agentClick,
@@ -206,12 +221,8 @@ const App =() => {
 
   return (
     <div id='App'>
-      <div className='top'>
-        <span id='game-title'>World DominOtion</span>
-        <span id='date'>{months[month] + ' ' + year}</span>
-        <span id='phase'>Phase: {phase}</span>
-      </div>
-      <div>
+      <Header year={year} month={month} myResources={myResources}/>
+      
         <TransformWrapper>
           <TransformComponent>
             <WorldMap
@@ -221,10 +232,10 @@ const App =() => {
               deployedAgent={deployedAgent}
               deployableArea={deployableArea}
               cellClick={cellClick}
+              areas={areas}
             />
           </TransformComponent>
         </TransformWrapper>
-      </div>
       <div className='panels'>
         <ControlPanel
           phase={phase}
@@ -234,6 +245,8 @@ const App =() => {
           agentClick={agentClick}
           handleImageClick={handleImageClick}
           travelClick={travelClick}
+          myResources={myResources}
+          areas={areas}
         />
       </div>
       {<div id='bottom'>{tutorials[phase]}</div>}

@@ -9,21 +9,27 @@ const ControlPanel = ({
   agentClick,
   handleImageClick,
   travelClick,
+  areas,
+  myResources
 }) => {
   const panelStyle = {
     color: selectedAgent ? colors[worldAreas[selectedAgent.area].sides[5].ideology].opp : '#333',
     backgroundColor: selectedAgent ? colors[worldAreas[selectedAgent.area].sides[5].ideology].main : '#333',     
   }  
   const pool = agentsPool.map(agent => <Agent key={agent.id} agent={agent} agentClick={agentClick} selectedAgent={selectedAgent}/>)
+  
 
 
+  console.log(myResources)
   return (
     <div className='panels'>
         <div className='rigth-panel'>
         { (phase === 'INIT' || phase === 'INITDEPLOY') && pool }
         {(phase === 'TRAVEL' && selectedAgent) && <Agent agent={selectedAgent} agentClick={agentClick} />}
+       
       </div>
       <div className='left-panel' /* style={panelStyle} */>
+       {/* {(phase === 'TURN' && resources)} */}
         {selectedAgent && <AgentInfo agent={selectedAgent} handleImageClick={handleImageClick} showBigImg={showBigImg} panelStyle={panelStyle}/>}
         {/* <div className='butts'>
           <button onClick={() => setAgentsPool([...agentsPool, ...generateRandomAgents(1)])}>NEW AGENT</button>

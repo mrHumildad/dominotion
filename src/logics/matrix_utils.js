@@ -1,14 +1,13 @@
-import { colors } from "./data"
-import { isUpperCase,  } from "./utils"
+import { colors, worldAreas } from "./data"
 
-export const findAreaByChar = (char) => {
+export const findAreaByChar = (char, worldAreas) => {
     if (char === 'w') return null;
     return Object.values(worldAreas).find(area => area.char === char);
 };
 
 const directions = {
   top: (tile, n) => ({ row: tile.row - n, col: tile.col }),
-  down: (tile, n) => ({ row: tile.row + n, col: tile.col }),
+  bottom: (tile, n) => ({ row: tile.row + n, col: tile.col }),
   left: (tile, n) => ({ row: tile.row, col: tile.col - n }),
   right: (tile, n) => ({ row: tile.row, col: tile.col + n }),
   topleft: (tile, n) => ({ row: tile.row - n, col: tile.col - n }),
@@ -17,40 +16,32 @@ const directions = {
   bottomright: (tile, n) => ({ row: tile.row + n, col: tile.col + n }),
 };
 
-/* export const getNeigh = (tile, matrix) => {
-  const rowLenght = matrix[0].length
-  const colLenght = matrix.length
-  return [
-    directions.down(tile, 1),
-    directions.right(tile, 1),
-    directions.top(tile, 1),
-    directions.left(tile, 1),
-/*     directions.topleft(tile, 1),
-    directions.topright(tile, 1),
-    directions.bottomleft(tile, 1),
-    directions.bottomright(tile, 1) 
-  ].filter(neigh => 
-    neigh.row >= 0 && neigh.row < colLenght && 
-    neigh.col >= 0 && neigh.col < rowLenght
-  );
-}; */
-/*   ]
-  const row = tile.row
-  const col = tile.col
-  const neigh = []
-  if (row - 1 >= 0) neigh.push({ row: row - 1, col })
-  if (row + 1 < colLenght) neigh.push({ row: row + 1, col })
-  if (col - 1 >= 0) neigh.push(matrix[row][col - 1])
-  if (col + 1 < rowLenght) neigh.push()
-  return neigh
+export const cell2char = (matrix, cell) => {
+  /* console.log(cell, matrix)
+  console.log(matrix[cell.col])
+  console.log(matrix[cell.col][cell.row]) */
+  
+  return matrix[cell.row][cell.col]
 }
- */
-export const getPossibleRotations = ({ideology, matrix, myAgents, char}) => {
-  //console.log(myAgents)
-  const rowLenght = matrix[0].length
-  const colLenght = matrix.length
-  const row = ideology.row
-  const col = ideology.col
+
+export const getPossibleRotations = ({ideology, matrix, agents, char}) => {
+  //console.log(ideology)
+  let rotations = []
+
+  if (cell2char(matrix, directions.bottom(ideology, 1)) === char && !tile2Agent(directions.bottom(ideology, 1), agents)) {
+    rotations.push({...directions.bottom(ideology, 1), rotation: 'bottom'})
+  }
+  if (cell2char(matrix, directions.right(ideology, 1)) === char && !tile2Agent(directions.right(ideology, 1), agents)) {
+    rotations.push({...directions.right(ideology, 1), rotation: 'right'})
+  }
+  if (cell2char(matrix, directions.top(ideology, 1)) === char && !tile2Agent(directions.top(ideology, 1), agents)) {
+    rotations.push({...directions.top(ideology, 1), rotation: 'top'})
+  }
+  if (cell2char(matrix, directions.left(ideology, 1)) === char && !tile2Agent(directions.left(ideology, 1), agents)) {
+    rotations.push({...directions.left(ideology, 1), rotation: 'left'})
+  }
+  return rotations ;
+/* 
   let candidates = []
   if (row + 1 < colLenght && isUpperCase(matrix[row + 1][col]) && !myAgents.find(agent => agent.fieldCell.row === row + 1 && agent.fieldCell.col === col) && !myAgents.find(agent => agent.ideologyCell.row === row + 1 && agent.ideologyCell.col === col)) 
     if (matrix[row + 1][col] === char)
@@ -68,7 +59,7 @@ export const getPossibleRotations = ({ideology, matrix, myAgents, char}) => {
     if(matrix[row][col - 1] === char)
       candidates.push({ row, col: col - 1 })
 
-  return candidates
+  return candidates */
 }
 
 export const tile2Agent = (tile, myAgents) => {
@@ -90,11 +81,10 @@ const defaultBorders = {
 export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   let borders = { ...defaultBorders }; // Use spread to create a new object, not modify the original defaultBorders
   const areaChar = matrix[tile.row][tile.col];
-  const area = findAreaByChar(areaChar);
+  const area = findAreaByChar(areaChar, worldAreas);
   const ideology = areaChar === ' ' ? null : area.sides[5].ideology;
   const borderColor = ideology ? colors[ideology].main : 'black'; // Default to black if no color found
   const checkAreaBorder = (char, coord, borderDirection, matrix) => {
-    
     if (matrix[coord.row][coord.col] === char /* || matrix[coord.row][coord.col] === char */) {
       borders[borderDirection] = 'black';
     } else {
@@ -106,7 +96,7 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   if (!currentAgent) {
     checkAreaBorder(areaChar, directions.top(tile, 1), 'top', matrix)
     checkAreaBorder(areaChar, directions.left(tile, 1), 'left', matrix)
-    checkAreaBorder(areaChar, directions.down(tile, 1), 'bottom', matrix)
+    checkAreaBorder(areaChar, directions.bottom(tile, 1), 'bottom', matrix)
     checkAreaBorder(areaChar, directions.right(tile, 1), 'right', matrix)
     return borders;
   }
@@ -146,7 +136,7 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
   // Check all four neighbors
   checkNeighbor(directions.top(tile, 1), 'top');
   checkNeighbor(directions.right(tile, 1), 'right');
-  checkNeighbor(directions.down(tile, 1), 'bottom');
+  checkNeighbor(directions.bottom(tile, 1), 'bottom');
   checkNeighbor(directions.left(tile, 1), 'left');
 
   return borders;
@@ -154,39 +144,23 @@ export const tileBorders = (tile, myAgents, currentAgent, matrix) => {
 
 export const getRndSpawn = (matrix, agents, char) => {
   const areaCells = getAreaCells(char, matrix)
-  console.log(areaCells.length, areaCells[0])
-
-} 
-  /* .filter(cell => {
-    return !myAgents.some(agent =>
+  //console.log(areaCells.length, areaCells[0])
+  const rotableCells = areaCells.filter(cell => {
+    //console.log(cell)
+    return !agents.some(agent =>
       (agent.fieldCell.row === cell.row && agent.fieldCell.col === cell.col) ||
       (agent.ideologyCell.row === cell.row && agent.ideologyCell.col === cell.col)
-    ) && getPossibleRotations({ ideology: { row: cell.row, col: cell.col }, matrix, myAgents, char }).length > 0;
+    ) && getPossibleRotations({ ideology: { row: cell.row, col: cell.col }, matrix, agents: agents, char }).length > 0;
   })
-  return areaCells.sort(() => Math.random() - 0.5)[0]; // Shuffle and take the first one
-  }; */
-/*   if (areaCells.length === 0) throw new Error("No valid spawn found");
-  const rowLenght = matrix[0].length;
-  const colLenght = matrix.length;
-  let row, col;
-  let tries = 0;
-  do {
-    row = Math.floor(Math.random() * colLenght);
-    col = Math.floor(Math.random() * rowLenght);
-    tries++;
-    if (tries > 1000) throw new Error("No valid spawn found");
-  } while (
-    matrix[row][col] !== char ||
-    myAgents.some(agent =>
-      (agent.fieldCell.row === row && agent.fieldCell.col === col) ||
-      (agent.ideologyCell.row === row && agent.ideologyCell.col === col)
-    ) ||
-    getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char }).length === 0
-  );
-  const rotations = getPossibleRotations({ ideology: { row, col }, matrix, myAgents, char });
-  const rotation = rotations[Math.floor(Math.random() * rotations.length)];
-  return { ideology: { row, col }, field: rotation };
-} */
+  if (rotableCells.length === 0) throw new Error("No valid spawn found");
+  const cell = rotableCells.sort(() => Math.random() - 0.5)[0]; // Shuffle and take the first one
+  const rotations = getPossibleRotations({ ideology: { row: cell.row, col: cell.col }, matrix, agents: agents, char });
+  const field = rotations.sort(() => Math.random() - 0.5)[0];
+  return {
+    ideology : cell,
+    field: field
+  }
+} 
 
 export const getAreaCells = (char, matrix) => {
   const cells = [];
@@ -218,9 +192,3 @@ export const logAreas = (matrix) => {
   return areas;
 }
 
-
-
-
-/* const findfirstNeighbor = (tile, matrix, myAgents) => {
-
-} */

@@ -1,5 +1,5 @@
 import {tileBorders, findAreaByChar} from '../logics/matrix_utils.js';
-import { colors } from '../logics/data';
+import { colors, worldAreas } from '../logics/data';
 import Face from './Die3D/Face.jsx'; // Assuming you create this component  
 
 const WorldMap = ({
@@ -9,6 +9,7 @@ const WorldMap = ({
   deployableArea,
   cellClick,
   myAgents,
+  areas
 }) => {
     const tiles = matrix.map((row, rowIndex) => {
     const deployablechar = deployableArea ? deployableArea.char : null;
@@ -35,11 +36,12 @@ const WorldMap = ({
             onClick={() => cellClick({ row: rowIndex, col: colIndex })}
           ></div>
         );
-
-      const area = findAreaByChar(cell);
+      
+      const area = findAreaByChar(cell, worldAreas); ///// worldareas no!
+      const areaColor = colors[area.sides[5].ideology];
      // console.log(colors, cell)
      // console.log(colors, [area.sides[5].ideology])
-      const cellCol = isDeployable ? colors[area.sides[5].ideology].main : colors[area.sides[5].ideology].des;
+      const cellCol = isDeployable ? areaColor.main : colors[area.sides[5].ideology].des;
       const cellBorders = tileBorders({row: rowIndex, col: colIndex}, myAgents, currentMyAgent, matrix);
       return (
         <div
@@ -52,7 +54,7 @@ const WorldMap = ({
             borderBottomColor: cellBorders.bottom,
             borderLeftColor: cellBorders.left,
           }}
-          className={`tile `}
+          className={`tile`}
           onClick={() => cellClick({ row: rowIndex, col: colIndex })}
         >
           {/* Render deployed agent's ideology or field */}
