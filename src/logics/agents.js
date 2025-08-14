@@ -1,6 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import useAgentPollinationImage from '../hooks/useAgentPollinationImage.js';
-import { usePollinationsImage, usePollinationsText } from '@pollinations/react';
 import { agentImageURL, agentCuriosityURL } from './pollination_IA.js';
 import { ideologies, fields, worldAreas, colors } from "./data.js";
 import { firstName, lastName, fullName } from 'full-name-generator';
@@ -10,6 +8,15 @@ function getRandomElement(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// Helper function to convert a Blob to a Base64 string
+const blobToBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
 
 export async function generateRandomAgents(n) {
   const ideologiesList = Object.keys(ideologies);
@@ -19,12 +26,11 @@ export async function generateRandomAgents(n) {
   for (let i = 0; i < n; i++) {/* area */
 
     const area = Object.keys(worldAreas)[Math.floor(Math.random() * Object.keys(worldAreas).length)];
-    const nationality = 'us';//getRandomElement(worldAreas[area].nationalities); 
+    const nationality = 'us';//getRandomElement(worldAreas[area].nationalities);
     const gender = Math.random() < 0.5 ? 0 : 1;
     const name = fullName(nationality, gender);
 
     const ideologyName = getRandomElement(ideologiesList);
-    //console.log(ideologiesList, ideologyName)
     let ideologyLevel = Math.floor(Math.random() * 6); // 0-5
     const ideologyData = ideologies[ideologyName];
     const subIdeology = ideologyData.subIdeologies[Math.floor(Math.random() * ideologyData.subIdeologies.length)];
@@ -58,30 +64,28 @@ export async function generateRandomAgents(n) {
       
       fieldCell: null,
       ideologyCell: null,
-      //personality: ideologyData.adjectives[ideologyLevel],
-      //job: fieldData.jobs[jobLevel],
-      //title: `${ideologyData.adjectives[ideologyLevel]} ${fieldData.jobs[jobLevel]}`,
       status,
     };
-    newagent.imgUrl = agentImageURL(newagent);
-
+    
+    // Asynchronously fetch and store the curiosity text
     const curiosityUrl = agentCuriosityURL(newagent);
-    newagent.curiosityUrl = curiosityUrl;
-    // Use Pollinations to fetch the curiosity text`;
-try {
-  const res = await fetch(curiosityUrl);
-  newagent.curiosity = await res.text();
-} catch {
-  newagent.curiosity = 'No curiosity available.';
-}
-    /* newagent.imgUrl = usePollinationsImage(agentImageURL(newagent), {
-      width: 400,
-      height: 400,
-      seed: 42,
-      model: 'turbo',
-      nologo: true,
-      enhance: false
-    }); */
+    try {
+      const res = await fetch(curiosityUrl);
+      newagent.curiosity = await res.text();
+    } catch {
+      newagent.curiosity = 'No curiosity available.';
+    }
+
+    // Asynchronously fetch the image and convert to Base64
+    const imageUrl = agentImageURL(newagent);
+    try {
+      const imgRes = await fetch(imageUrl);
+      const imgBlob = await imgRes.blob();
+      newagent.imgUrl = await blobToBase64(imgBlob);
+    } catch {
+      newagent.imgUrl = 'No image available.';
+    }
+
     agents.push(newagent);
   }
 
@@ -90,13 +94,11 @@ try {
 }
 
 export const AgentDescription = (agent) => {
-  //console.log(agent)
   return agent.ideologyAdj + 
   ' ' + agent.subIdeology.name + 
   ' ' + agent.job + 
   ' from ' + agent.area;
 }
-//generateRandomAgents();
 
 export const agenstConnection = (agent1, agent2, type1, type2) => {
   const sameType = type1 === type2;
@@ -120,6 +122,3 @@ export const agenstConnection = (agent1, agent2, type1, type2) => {
   console.log('connection', agent1.name, agent2.name, connection);
   return connection;
 }
-/*   export const calcConnection = (connection) => {
-
-} */
