@@ -13,7 +13,7 @@ import './App.css';
 
 const tutorials = {
   INIT: 'SELECCIONA UN AGENTE PARA VER SU INFO Y EVIDENCIAR SU AREA DE ORIGEN',
-  INITDEPLOY: 'HAZ CLICK EN EL AREA DE ORIGEN DEL AGENTE PARA DESPLEGARLO   [ click en la imagen para ver perfil completo ]',
+  INITDEPLOY: 'HAZ CLICK EN EL AREA DE ORIGEN DEL AGENTE PARA DESPLEGARLO   [ click en la imagen para ver perfil completo ',
   TRAVEL: 'HAZ CLICK EN UN AGENTE PARA VIAJAR A SU AREA DE ORIGEN',
 };
 
@@ -55,9 +55,21 @@ const useGameLogic = () => {
   const [myResources, setMyResources] = useState(initialResources);
   const [deployedAgent, setDeployedAgent] = useState(resetDeployed);
   const [areas, setAreas] = useState(worldAreas)
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    
-    generateRandomAgents(conf.poolSize).then(setAgentsPool);
+    const fetchAgents = async () => {
+      setLoading(true);
+      try {
+        const newAgents = await generateRandomAgents(conf.poolSize);
+        setAgentsPool(newAgents);
+      } catch (error) {
+        console.error("Failed to fetch initial agents:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAgents();
+    //generateRandomAgents(conf.poolSize).then(setAgentsPool);
   }, []);
   const spawn2rnd = () => {
       if (!selectedAgent) return ;
@@ -190,6 +202,8 @@ const useGameLogic = () => {
     deployedAgent,
     showBigImg,
     myResources,
+    loading,
+    setLoading,
     setMyResources,
     handleImageClick,
     travelClick,
@@ -212,6 +226,8 @@ const App =() => {
     showBigImg,
     myResources,
     areas,
+    loading,
+    setLoading,
     setMyResources,
     handleImageClick,
     travelClick,
@@ -237,6 +253,7 @@ const App =() => {
           </TransformComponent>
         </TransformWrapper>
       <div className='panels'>
+        { loading ? <div>Loading...</div> : 
         <ControlPanel
           phase={phase}
           agentsPool={agentsPool}
@@ -247,7 +264,7 @@ const App =() => {
           travelClick={travelClick}
           myResources={myResources}
           areas={areas}
-        />
+        />}
       </div>
       {<div id='bottom'>{tutorials[phase]}</div>}
     </div>
